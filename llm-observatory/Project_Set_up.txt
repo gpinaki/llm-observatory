@@ -1,0 +1,156 @@
+# Create main project directory
+mkdir llm-observatory
+cd llm-observatory
+
+# Create virtual environment
+python3.11 -m venv venv
+
+# Activate virtual environment
+source venv/bin/activate
+
+# Create main source directory
+mkdir -p src/llm
+mkdir -p src/monitoring
+mkdir -p src/config
+mkdir -p src/database
+mkdir -p src/utils
+
+# Create test directories
+mkdir -p tests/test_llm
+mkdir -p tests/test_monitoring
+mkdir -p tests/test_config
+mkdir -p tests/test_utils
+
+# Create other necessary directories
+mkdir logs
+mkdir data
+
+# Create __init__.py files for all Python packages
+touch src/__init__.py
+touch src/llm/__init__.py
+touch src/monitoring/__init__.py
+touch src/config/__init__.py
+touch src/database/__init__.py
+touch src/utils/__init__.py
+
+touch tests/__init__.py
+touch tests/test_llm/__init__.py
+touch tests/test_monitoring/__init__.py
+touch tests/test_config/__init__.py
+touch tests/test_utils/__init__.py
+
+# Create main application files
+touch app.py
+touch requirements.txt
+touch README.md
+touch .env
+touch .gitignore
+
+llm-observatory/
+│
+├── .env                    # Environment variables
+├── .gitignore             # Git ignore file
+├── README.md              # Project documentation
+├── requirements.txt       # Project dependencies
+├── app.py                # Main Streamlit application
+│
+├── src/                   # Source code
+│   ├── __init__.py
+│   │
+│   ├── config/           # Configuration management
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   │
+│   ├── llm/             # LLM implementations
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── openai_llm.py
+│   │   └── anthropic_llm.py
+│   │
+│   ├── monitoring/      # Monitoring implementations
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── trulens_monitor.py
+│   │   ├── langfuse_monitor.py
+│   │   └── portkey_monitor.py
+│   │
+│   ├── database/        # Future database integration
+│   │   ├── __init__.py
+│   │   └── connection.py
+│   │
+│   └── utils/          # Utility functions
+│       ├── __init__.py
+│       └── helpers.py
+│
+├── tests/               # Test files
+│   ├── __init__.py
+│   │
+│   ├── test_llm/
+│   │   ├── __init__.py
+│   │   └── test_openai.py
+│   │
+│   ├── test_monitoring/
+│   │   ├── __init__.py
+│   │   └── test_trulens.py
+│   │
+│   ├── test_config/
+│   │   ├── __init__.py
+│   │   └── test_settings.py
+│   │
+│   └── test_utils/
+│       ├── __init__.py
+│       └── test_helpers.py
+│
+├── logs/               # Log files directory
+│   └── llm_observatory.log
+│
+├── data/              # Data storage directory
+│
+└── venv/              # Virtual environment (not in git)
+
+
+After that I get error running test_setup.py to check my set up.
+
+So, I did following:
+
+pip install pydantic-settings
+
+Updated requirement.txt
+# Add this line to your requirements.txt
+pydantic-settings>=2.0.0
+
+pip install -r requirements.txt
+
+
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/test_llm/test_openai.py -v
+
+# Run with detailed output
+pytest tests/test_llm/test_openai.py -v -s
+
+# Clean up cache
+rm -rf .pytest_cache
+
+# Run tests
+pytest tests/test_llm/test_openai.py -v
+
+# Clean pytest cache
+rm -rf .pytest_cache
+
+# Install updated requirements if needed
+pip install pytest-asyncio==0.23.5 pytest==8.0.0
+
+# Run tests
+pytest tests/test_llm/test_openai.py -v
+pytest tests/test_llm/test_anthropic.py -v
+
+interface
+
+mkdir -p src/interface
+touch src/interface/__init__.py
+touch src/interface/app.py
+
+streamlit run src/interface/app.py
