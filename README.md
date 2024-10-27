@@ -15,48 +15,23 @@ Control Panel: Configure application settings like deployment environment, provi
 Performance Overview: Track and visualize key performance indicators, including cost and token usage per session.
 Session Summary: Display session-wide statistics in a compact sidebar format to help users quickly assess cumulative costs and response efficiency.
 Advanced Configuration: Fine-tune model settings, such as temperature and token limits, for application-specific requirements.
-## 🚀 Getting Started
-### Prerequisites
-Python 3.7+
-Streamlit: pip install streamlit
-Pandas: pip install pandas
-Ensure that valid API keys for OpenAI and Anthropic are set up in the configuration file before launching the application.
 
-Installation
-Clone the Repository:
+## 📚 How It Works
 
-bash
-Copy code
-git clone https://github.com/gpinaki/llm-observatory.git
-cd llm-observatory
-Install Dependencies:
+###LLM Insights Hub enables organizations to evaluate LLM performance by examining cost and efficiency metrics. Key workflows include:
 
-bash
-Copy code
-pip install -r requirements.txt
-Configure API Keys: Update the configuration file located in src/config/settings.py with the required API keys for OpenAI and Anthropic.
+####Provider Selection: Choose between OpenAI and Anthropic models, each with distinct cost and performance attributes.
+###Model Customization: Adjust response characteristics through settings like temperature and token limits.
+###Cost and Usage Tracking: Monitor usage metrics such as token count, total cost, and average response time per session to optimize resource allocation.
+## 🔧 Configuration Options
 
-Usage
-To start the application, run:
+## Environment: Select from Development, Test, Integration, or Production.
+## LLM Provider: Choose between OpenAI and Anthropic for flexible model use.
+## Advanced Settings: Customize model response behavior by modifying temperature and maximum tokens.
 
-bash
-Copy code
-streamlit run src/interface/app.py
-Open your browser and go to http://localhost:8501 to access the app.
+## 🛠️ Project Structure
 
-📚 How It Works
-LLM Insights Hub enables organizations to evaluate LLM performance by examining cost and efficiency metrics. Key workflows include:
 
-Provider Selection: Choose between OpenAI and Anthropic models, each with distinct cost and performance attributes.
-Model Customization: Adjust response characteristics through settings like temperature and token limits.
-Cost and Usage Tracking: Monitor usage metrics such as token count, total cost, and average response time per session to optimize resource allocation.
-🔧 Configuration Options
-Environment: Select from Development, Test, Integration, or Production.
-LLM Provider: Choose between OpenAI and Anthropic for flexible model use.
-Advanced Settings: Customize model response behavior by modifying temperature and maximum tokens.
-🛠️ Project Structure
-plaintext
-Copy code
 llm-observatory/
 ├── src/
 │   ├── config/
@@ -68,11 +43,7 @@ llm-observatory/
 │   │   └── anthropic_llm.py    # Anthropic LLM integration module
 ├── requirements.txt            # Project dependencies
 └── README.md                   # Project documentation
-🤝 Contributing
+
+## 🤝 Contributing
 Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request. For any issues or suggestions, feel free to raise an issue in the GitHub repository.
 
-📄 License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-📞 Support
-For support or questions, reach out via the repository’s issues page.
