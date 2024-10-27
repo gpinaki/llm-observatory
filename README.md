@@ -25,25 +25,6 @@ Advanced Configuration: Fine-tune model settings, such as temperature and token 
 ###Cost and Usage Tracking: Monitor usage metrics such as token count, total cost, and average response time per session to optimize resource allocation.
 ## 🔧 Configuration Options
 
-## Environment: Select from Development, Test, Integration, or Production.
-## LLM Provider: Choose between OpenAI and Anthropic for flexible model use.
-## Advanced Settings: Customize model response behavior by modifying temperature and maximum tokens.
-
-## 🛠️ Project Structure
-
-
-llm-observatory/
-├── src/
-│   ├── config/
-│   │   └── settings.py         # Configuration settings for API keys and environments
-│   ├── interface/
-│   │   └── app.py              # Main application file for Streamlit
-│   ├── llm/
-│   │   ├── openai_llm.py       # OpenAI LLM integration module
-│   │   └── anthropic_llm.py    # Anthropic LLM integration module
-├── requirements.txt            # Project dependencies
-└── README.md                   # Project documentation
-
-## 🤝 Contributing
-Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request. For any issues or suggestions, feel free to raise an issue in the GitHub repository.
-
+### Environment: Select from Development, Test, Integration, or Production.
+### LLM Provider: Choose between OpenAI and Anthropic for flexible model use.
+### Advanced Settings: Customize model response behavior by modifying temperature and maximum tokens.
