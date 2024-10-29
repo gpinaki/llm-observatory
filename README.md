@@ -1,162 +1,128 @@
 # 🔭 LLM Observatory: Enterprise LLM Monitoring & Cost Analysis Platform
 
-A comprehensive LLM observability platform designed for enterprise environments, providing real-time monitoring, cost tracking, and performance analytics across multiple LLM providers (OpenAI and Anthropic).
+A comprehensive observability platform designed for enterprise environments, providing real-time monitoring, cost analysis, and performance tracking across multiple LLM providers (OpenAI and Anthropic).
 
-## 🌟 Key Features
+[Insert main dashboard screenshot here - showing all tabs]
 
-- **Multi-Provider Support**: 
-  - OpenAI Integration (GPT-4, GPT-3.5)
-  - Anthropic Integration (Claude-3 family)
-  - Extensible architecture for additional providers
-
-- **Enterprise-Grade Monitoring**:
-  - Real-time cost tracking and analysis
-  - Token usage monitoring
-  - Performance metrics and latency tracking
-  - Environment-specific configurations (Dev, Test, Int, Prod)
-
-- **Cost Management**:
-  - Granular cost tracking per request
-  - Token-level cost breakdown
-  - Usage trends and patterns
-  - Budget monitoring and alerts
-
-- **Performance Analytics**:
-  - Response time monitoring
-  - Token processing rates
-  - Error rate tracking
-  - Retry mechanism with exponential backoff
-
-- **Enterprise Features**:
-  - Environment segregation
-  - Application-level tracking
-  - Session-based monitoring
-  - Comprehensive logging
-
-## 🏗️ Architecture
-
-```plaintext
-LLM Observatory/
-├── src/
-│   ├── config/        # Configuration management
-│   ├── llm/           # LLM provider implementations
-│   ├── interface/     # Streamlit UI components
-│   └── monitoring/    # Monitoring implementations
-└── tests/            # Comprehensive test suite
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.11+
-- OpenAI API Key
-- Anthropic API Key
-- Virtual Environment
-
-### Installation
-
-1. **Clone the repository:**
+## ⚡️ Quick Start
 ```bash
+# Clone repository
 git clone https://github.com/yourusername/llm-observatory.git
 cd llm-observatory
-```
 
-2. **Set up virtual environment:**
-```bash
+# Set up virtual environment
 python3.11 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+source venv/bin/activate
 
-3. **Install dependencies:**
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-4. **Configure environment variables:**
-```bash
-# Create .env file
-cp .env.example .env
+# Configure environment variables
 
-# Add your API keys
-OPENAI_API_KEY=your_openai_key_here
-ANTHROPIC_API_KEY=your_anthropic_key_here
-```
+# Add your API keys to .env
 
-## 💼 Enterprise Usage
-
-1. **Start the application:**
-```bash
+# Run application
 streamlit run src/interface/app.py
 ```
 
-2. **Configure your environment:**
-   - Select environment (Dev/Test/Int/Prod)
-   - Enter application identifier
-   - Choose LLM provider and model
+## 🎯 Core Features
 
-3. **Monitor costs and performance:**
-   - Track real-time costs
-   - Monitor response times
-   - Analyze token usage
-   - View detailed metrics
+### 1. Multi-Provider Cost Analysis
+- Real-time cost tracking across providers
+- Token-level cost breakdown
+- Historical cost trends
+- Cost comparison visualizations
 
-## 📊 Cost Analysis
+[Insert cost analysis dashboard screenshot]
 
-The platform provides detailed cost tracking:
+### 2. Performance Monitoring
+- Response time tracking
+- Token processing rates
+- Error rate monitoring
+- Provider performance comparison
 
-- **Per-Request Costs:**
-  - Input token costs
-  - Output token costs
-  - Total cost calculation
+[Insert performance metrics screenshot]
 
-- **Aggregated Metrics:**
-  - Session-based totals
-  - Application-level costs
-  - Environment-specific tracking
+### 3. Environment Management
+- Support for Dev/Test/Int/Prod environments
+- Environment-specific configurations
+- Isolated metrics per environment
+- Cross-environment comparison
 
-## 🔍 Monitoring Capabilities
+### 4. Interactive Dashboard
+- Toggle-able analytics dashboard
+- Historical data visualization (last 10 calls)
+- Provider comparison metrics
+- Detailed call history
 
-- **Real-time Metrics:**
-  - Response latency
-  - Token processing rates
-  - Error rates
-  - Retry statistics
+[Insert dashboard tabs screenshot]
 
-- **Session Analytics:**
-  - Token usage trends
-  - Cost patterns
-  - Performance metrics
-  - Environmental impact
+## 💡 Usage Guide
 
-## 🛠️ Development
+### Cost Monitoring
+```python
+# Example integration in your code
+from llm_observatory import OpenAILLM
 
-### Running Tests
-```bash
-# Run all tests
-pytest tests/ -v
-
-# Run specific test suite
-pytest tests/test_llm/test_openai.py -v
+async with OpenAILLM(
+    api_key="your-key",
+    model="gpt-4",
+    application_id="your-app",
+    environment="production"
+) as llm:
+    response = await llm.generate_response(
+        prompt="Hello!",
+        temperature=0.7
+    )
+    print(f"Cost: ${response['metadata']['costs']['total_cost']}")
 ```
 
-### Adding New LLM Providers
+### Performance Tracking
+```python
+# Track performance metrics
+metrics = response["metadata"]["performance"]
+print(f"Response Time: {metrics['response_time']}s")
+print(f"Processing Speed: {metrics['tokens_per_second']} tokens/sec")
+```
 
-1. Implement the `BaseLLM` abstract class
-2. Add provider configuration in `settings.py`
-3. Create corresponding test suite
+### Environment Management
+```python
+# Example environment-specific configuration
+llm = OpenAILLM(
+    api_key=settings.OPENAI_API_KEY,
+    model="gpt-4",
+    application_id="enterprise-app",
+    environment="production"  # dev/test/int/prod
+)
+```
 
-## 🤝 Contributing
+## 🚀 Implementation Roadmap
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### Current Implementation
+- ✅ Multi-provider support (OpenAI, Anthropic)
+- ✅ Cost tracking and analysis
+- ✅ Performance monitoring
+- ✅ Environment management
+- ✅ Interactive dashboard
+- ✅ Historical data tracking (last 10 calls)
 
-## 📄 License
+### Future Enhancements
+- 🔄 Database integration for extended history
+- 🔄 Custom alert configurations
+- 🔄 Cost prediction modeling
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 📊 Benefits
+
+- **Cost Optimization**: Track and optimize LLM usage costs across providers
+- **Performance Monitoring**: Real-time performance metrics and alerts
+- **Multi-Environment**: Development to Production coverage
+- **Provider Agnostic**: Support for multiple LLM providers
+- **Scalable Architecture**: Built for enterprise requirements
+
+## 📝 License
+
+This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) for details.
 
 ## 👤 Author
 
@@ -165,26 +131,6 @@ Pinaki Guha
 - Email: [pinaki.guha@gmail.com]
 - Portfolio: [https://github.com/gpinaki]
 
-## 🌟 Enterprise Benefits
-
-- **Cost Optimization:** Track and optimize LLM usage costs
-- **Performance Monitoring:** Real-time performance metrics
-- **Multi-Environment Support:** Development to Production coverage
-- **Provider Agnostic:** Support for multiple LLM providers
-- **Scalable Architecture:** Built for enterprise requirements
-
-## 🔜 Roadmap
-
-- [ ] Additional LLM provider integrations
-- [ ] Advanced cost prediction models
-- [ ] Custom alert configurations
-- [ ] Database integration for historical analysis
-- [ ] Enhanced security features
-
-
 ## 🙏 Acknowledgments
 
-- OpenAI and Anthropic for their robust APIs
-- Streamlit for the excellent UI framework
-- The open-source community for inspiration and tools
-
+This project was developed by Pinaki Guha, with supplementary support from AI-based code assistance tools like ChatGPT, Claude, and GitHub Copilot, to streamline specific parts of the development process.

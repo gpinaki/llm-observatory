@@ -8,6 +8,11 @@ from src.config.settings import settings
 from src.llm.openai_llm import OpenAILLM
 from src.llm.anthropic_llm import AnthropicLLM
 
+# Add new imports for dashboard components
+import plotly.express as px
+import plotly.graph_objects as go
+from src.interface.dashboard import DashboardComponents
+
 class LLMInsightsHub:
     """Streamlit interface for LLM Insights Hub."""
     
@@ -49,6 +54,11 @@ class LLMInsightsHub:
             st.session_state.application_name = "app-llm-insights"
         if "environment" not in st.session_state:
             st.session_state.environment = "Development"
+        # Add these new initializations for dashboard components
+        if "llm_history" not in st.session_state:
+            st.session_state.llm_history = []
+        if "show_dashboard" not in st.session_state:
+            st.session_state.show_dashboard = False
 
     def render_sidebar(self) -> tuple:
         """Render sidebar configuration options."""
@@ -116,7 +126,6 @@ class LLMInsightsHub:
             )
             return await llm.generate_response(prompt=prompt, temperature=temperature, max_tokens=max_tokens)
 
-
     def display_metrics(self, metadata: Dict[str, Any]):
         """Display basic metrics in the Streamlit app."""
         st.markdown("### Performance Overview", unsafe_allow_html=True)
@@ -132,10 +141,71 @@ class LLMInsightsHub:
         """Display detailed metrics in the Streamlit app."""
         with st.expander("Detailed Metrics"):
             st.json(metadata)
+    
+    def store_llm_call(self, prompt: str, response: Dict[str, Any]):
+        """Store LLM call in history."""
+        history_entry = {
+            "timestamp": datetime.now(),
+            "provider": response["metadata"]["model"].split("-")[0],
+            "model": response["metadata"]["model"],
+            "prompt": prompt[:100] + "..." if len(prompt) > 100 else prompt,
+            "total_tokens": response["metadata"]["tokens"]["total_tokens"],
+            "response_time": response["metadata"]["performance"]["response_time"],
+            "total_cost": response["metadata"]["costs"]["total_cost"],
+            "tokens_per_second": response["metadata"]["performance"]["tokens_per_second"]
+        }
+        
+        st.session_state.llm_history.append(history_entry)
+        if len(st.session_state.llm_history) > 10:
+            st.session_state.llm_history.pop(0)
+
+    def render_dashboard(self):
+        """Render the performance dashboard."""
+        if not st.session_state.llm_history:
+            st.info("No LLM calls recorded yet. Start chatting to see analytics!")
+            return
+        
+        # Convert history to DataFrame
+        df = pd.DataFrame(st.session_state.llm_history)
+    
+        # Create dashboard tabs
+        overview_tab, cost_tab, perf_tab, history_tab = st.tabs([
+            "Overview",
+            "Cost Analysis",
+            "Performance Metrics",
+            "Call History"
+        ])
+    
+        with overview_tab:
+            DashboardComponents.render_overview_tab(df)
+    
+        with cost_tab:
+            DashboardComponents.render_cost_analysis_tab(df)
+    
+        with perf_tab:
+            DashboardComponents.render_performance_tab(df)
+    
+        with history_tab:
+            DashboardComponents.render_history_tab(df)
 
     async def run_async(self):
         """Run the Streamlit application asynchronously."""
         provider, model, temperature, max_tokens, application_name, environment = self.render_sidebar()
+    
+        with st.sidebar:
+            st.sidebar.divider()
+            if st.button(
+                "📊 Toggle Performance Dashboard",
+                help="Show/Hide performance analytics"
+            ):
+                st.session_state.show_dashboard = not st.session_state.show_dashboard
+
+        # Add this section after the toggle button
+        if st.session_state.show_dashboard:
+            st.header("📊 Performance Analytics")
+            self.render_dashboard()
+            st.divider()
+
         if not application_name:
             st.info("👈 Please enter an application name in the sidebar to begin")
             return
@@ -160,18 +230,19 @@ class LLMInsightsHub:
                         application_name=application_name,
                         environment=environment
                     )
-                    st.markdown(response["response"])
-                    self.display_metrics(response["metadata"])
-                    self.display_detailed_metrics(response["metadata"])
-                    st.session_state.total_tokens += response["metadata"]["tokens"]["total_tokens"]
-                    st.session_state.total_cost += response["metadata"]["costs"]["total_cost"]
-                    st.session_state.response_times.append(response["metadata"]["performance"]["response_time"])
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": response["response"],
-                        "metadata": response["metadata"],
-                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    })
+                self.store_llm_call(prompt, response)
+                st.markdown(response["response"])
+                self.display_metrics(response["metadata"])
+                self.display_detailed_metrics(response["metadata"])
+                st.session_state.total_tokens += response["metadata"]["tokens"]["total_tokens"]
+                st.session_state.total_cost += response["metadata"]["costs"]["total_cost"]
+                st.session_state.response_times.append(response["metadata"]["performance"]["response_time"])
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": response["response"],
+                    "metadata": response["metadata"],
+                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                })
         if st.session_state.messages:
             st.sidebar.divider()
             st.sidebar.subheader("Session Summary")
