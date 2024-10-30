@@ -7,7 +7,7 @@ A comprehensive observability platform designed for enterprise environments, pro
 ## ⚡️ Quick Start
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/llm-observatory.git
+git clone https://github.com/gpinaki/llm-observatory.git
 cd llm-observatory
 
 # Set up virtual environment
@@ -136,3 +136,4 @@ Pinaki Guha
 ## 🙏 Acknowledgments
 
 This project was developed by Pinaki Guha, with supplementary support from AI-based code assistance tools like ChatGPT, Claude, and GitHub Copilot, to streamline specific parts of the development process.
+

@@ -33,28 +33,109 @@ class LLMInsightsHub:
         """Configure Streamlit page."""
         st.set_page_config(
             page_title="LLM Observatory",
-            page_icon="🔍",
+            page_icon="🔭",
             layout="wide",
             initial_sidebar_state="expanded"
         )
         st.markdown(
             """
             <style>
+            /* Main title styling */
             .main-title {
-                font-size: 2.5em;
-                color: #4A90E2;
-                background-color: #F5F5F5;
-                padding: 10px;
-                border-radius: 5px;
+                font-family: 'Helvetica Neue', Arial, sans-serif;
+                font-size: 2.8em;
+                font-weight: 600;
+                color: #2C3E50;
+                background: linear-gradient(to right, #E8F4F8, #F8F9FA);
+                padding: 20px;
+                border-radius: 10px;
                 text-align: center;
+                margin-bottom: 10px;  /* Reduced from 30px to bring subtitle closer */
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            
+            /* Subtitle styling */
+            .subtitle {
+                font-family: 'Helvetica Neue', Arial, sans-serif;
+                font-size: 1.2em;
+                font-weight: 400;
+                color: #5D6D7E;
+                text-align: center;
+                margin-bottom: 30px;
+                padding: 0 20px;
+                line-height: 1.5;
+                letter-spacing: 0.3px;
+            }
+            
+            /* Highlight key terms in subtitle */
+            .highlight {
+                color: #3498DB;
+                font-weight: 500;
+            }
+            
+            /* General page styling */
+            .stApp {
+                background-color: #FAFBFC;
+            }
+            
+            /* Subheader styling */
+            .subheader {
+                color: #34495E;
+                font-family: 'Helvetica Neue', Arial, sans-serif;
+                padding: 5px 0;
+            }
+            
+            /* Metric cards styling */
+            .stMetric {
+                background-color: #FFFFFF;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                padding: 10px;
+            }
+            
+            /* Sidebar styling */
+            .css-1d391kg {
+                background-color: #F8F9FA;
+            }
+            
+            /* Button styling */
+            .stButton>button {
+                background-color: #3498DB;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 16px;
+                transition: all 0.3s ease;
+            }
+            
+            .stButton>button:hover {
+                background-color: #2980B9;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            /* Chat interface styling */
+            .stChatMessage {
+                background-color: #FFFFFF;
+                border-radius: 8px;
+                padding: 10px;
+                margin: 5px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             }
             </style>
             """,
             unsafe_allow_html=True
         )
-        st.markdown('<div class="main-title">🔍 LLM Observatory</div>', unsafe_allow_html=True)
+        # Title and subtitle
+        st.markdown('<div class="main-title">🔭 LLM Observatory</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="subtitle">Unlock Model Insights: '
+            '<span class="highlight">Track Performance</span>, '
+            '<span class="highlight">Control Costs</span>, '
+            '<span class="highlight">Drive Results</span></div>', 
+            unsafe_allow_html=True
+        )
         st.sidebar.header("Control Panel")
-
+    
     def initialize_session_state(self):
         """Initialize session state variables."""
         if "messages" not in st.session_state:
