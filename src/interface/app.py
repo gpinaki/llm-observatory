@@ -32,12 +32,27 @@ class LLMInsightsHub:
     def setup_page_config(self):
         """Configure Streamlit page."""
         st.set_page_config(
-            page_title="LLM Insights Hub",
+            page_title="LLM Observatory",
             page_icon="🔍",
             layout="wide",
             initial_sidebar_state="expanded"
         )
-        st.title("🔍 LLM Insights Hub")
+        st.markdown(
+            """
+            <style>
+            .main-title {
+                font-size: 2.5em;
+                color: #4A90E2;
+                background-color: #F5F5F5;
+                padding: 10px;
+                border-radius: 5px;
+                text-align: center;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        st.markdown('<div class="main-title">🔍 LLM Observatory</div>', unsafe_allow_html=True)
         st.sidebar.header("Control Panel")
 
     def initialize_session_state(self):

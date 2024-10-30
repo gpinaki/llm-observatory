@@ -43,11 +43,13 @@ streamlit run src/interface/app.py
 
 [Insert performance metrics screenshot]
 
-### 3. Environment Management
+### 3. Robust Control Panel
 - Support for Dev/Test/Int/Prod environments
-- Environment-specific configurations
-- Isolated metrics per environment
-- Cross-environment comparison
+- Enable passing application name for auditing
+- Provision to choose LLM and models
+- Provision to modify temperature and max token limits
+
+[Insert control panel]
 
 ### 4. Interactive Dashboard
 - Toggle-able analytics dashboard
