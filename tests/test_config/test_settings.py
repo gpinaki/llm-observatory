@@ -30,7 +30,7 @@ def test_monitoring_config(settings):
 
 def test_api_key_validation(settings):
     """Test API key validation."""
-    validation_result = settings.validate_api_keys()
+    validation_result = settings.validate_keys()
     assert isinstance(validation_result, dict)
     assert "openai" in validation_result
     assert "anthropic" in validation_result

@@ -50,7 +50,7 @@ class LLMInsightsHub:
                 padding: 20px;
                 border-radius: 10px;
                 text-align: center;
-                margin-bottom: 10px;  /* Reduced from 30px to bring subtitle closer */
+                margin-bottom: 10px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             }
             
@@ -76,56 +76,309 @@ class LLMInsightsHub:
             /* General page styling */
             .stApp {
                 background-color: #FAFBFC;
+                color: #2C3E50;
             }
             
-            /* Subheader styling */
-            .subheader {
-                color: #34495E;
-                font-family: 'Helvetica Neue', Arial, sans-serif;
-                padding: 5px 0;
+            /* Enhanced Sidebar Styling */
+            [data-testid="stSidebar"] {
+                background-color: #2C3E50;
+                padding: 1rem;
             }
-            
-            /* Metric cards styling */
+
+            /* Sidebar header styling */
+            [data-testid="stSidebar"] .streamlit-expanderHeader {
+                color: #ECF0F1 !important;
+                font-weight: 600;
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+
+            /* Sidebar subheader */
+            [data-testid="stSidebar"] h3 {
+                color: #ECF0F1 !important;
+                font-weight: 600;
+                padding: 10px 0;
+                border-bottom: 1px solid #34495E;
+                margin-bottom: 15px;
+                font-size: 1.2em;
+            }
+
+            /* Control Panel text */
+            [data-testid="stSidebar"] .streamlit-expanderContent {
+                background-color: #34495E;
+                border-radius: 8px;
+                padding: 15px;
+                margin-top: 8px;
+            }
+
+            /* Dropdown and Input Labels */
+            [data-testid="stSidebar"] .stSelectbox label,
+            [data-testid="stSidebar"] .stTextInput label,
+            [data-testid="stSidebar"] .stSlider label {
+                color: #ECF0F1 !important;
+                font-weight: 500;
+                font-size: 0.95em;
+                margin-bottom: 5px;
+            }
+
+            /* Dropdown and Input Fields */
+            [data-testid="stSidebar"] .stSelectbox > div > div,
+            [data-testid="stSidebar"] .stTextInput > div > div {
+                background-color: #ECF0F1 !important;
+                color: #2C3E50 !important;
+                border-radius: 5px;
+                border: 1px solid #3498DB;
+            }
+
+            /* Fix for text input value */
+            [data-testid="stSidebar"] .stTextInput input {
+                color: #2C3E50 !important;
+                background-color: #ECF0F1 !important;
+            }
+
+            /* Fix for selectbox value */
+            [data-testid="stSidebar"] .stSelectbox > div > div[role="listbox"] {
+                color: #2C3E50 !important;
+                background-color: #ECF0F1 !important;
+            }
+
+            /* Sidebar metrics styling */
+            [data-testid="stSidebar"] .stMetric {
+                background-color: #34495E;
+                padding: 12px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 10px;
+            }
+
+            [data-testid="stSidebar"] .stMetric label {
+                color: #ECF0F1 !important;
+                font-weight: 500;
+            }
+
+            [data-testid="stSidebar"] .stMetric .metric-value {
+                color: #3498DB !important;
+                font-weight: 600;
+            }
+
+            /* Sidebar divider */
+            [data-testid="stSidebar"] hr {
+                border-color: #34495E;
+                margin: 20px 0;
+            }
+
+            /* Sidebar warning messages */
+            [data-testid="stSidebar"] .stAlert {
+                background-color: #E74C3C;
+                color: #FFFFFF;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px 0;
+            }
+
+            /* Sidebar DataFrame */
+            [data-testid="stSidebar"] .dataframe {
+                background-color: #34495E;
+                color: #ECF0F1;
+                border-radius: 5px;
+                padding: 8px;
+                border: 1px solid #3498DB;
+            }
+
+            /* Sidebar Toggle Button */
+            [data-testid="stSidebar"] .stButton > button {
+                background-color: #3498DB;
+                color: #FFFFFF;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                font-weight: 500;
+                width: 100%;
+                margin: 10px 0;
+                transition: all 0.3s ease;
+            }
+
+            [data-testid="stSidebar"] .stButton > button:hover {
+                background-color: #2980B9;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+
+            /* Slider styling in sidebar */
+            [data-testid="stSidebar"] .stSlider {
+                margin: 15px 0;
+            }
+
+            [data-testid="stSidebar"] .stSlider > div > div {
+                background-color: #34495E;
+            }
+
+            [data-testid="stSidebar"] .stSlider .slider-value {
+                color: #ECF0F1 !important;
+            }
+
+            /* Keep existing main content styles */
             .stMetric {
                 background-color: #FFFFFF;
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.05);
                 padding: 10px;
+                color: #2C3E50;
             }
             
-            /* Sidebar styling */
-            .css-1d391kg {
-                background-color: #F8F9FA;
-            }
-            
-            /* Button styling */
-            .stButton>button {
-                background-color: #3498DB;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                padding: 8px 16px;
-                transition: all 0.3s ease;
-            }
-            
-            .stButton>button:hover {
-                background-color: #2980B9;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            
-            /* Chat interface styling */
             .stChatMessage {
                 background-color: #FFFFFF;
                 border-radius: 8px;
                 padding: 10px;
                 margin: 5px 0;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+                color: #2C3E50;
             }
+            /* Chat Interface Text Styling */
+            .stChatMessage p {
+                color: #2C3E50 !important;
+                font-size: 1rem;
+            }
+
+            /* Chat Message Background */
+            .stChatMessage {
+                background-color: #FFFFFF !important;
+                border-radius: 8px;
+                padding: 10px;
+                margin: 5px 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+
+            /* Dashboard and Metrics Text */
+            .element-container div {
+                color: #2C3E50 !important;
+            }
+
+           /* Complete Advanced Settings Panel Fix */
+            /* Main expander header */
+            [data-testid="stSidebar"] .streamlit-expanderHeader {
+                color: #ECF0F1 !important;
+                background-color: #2C3E50 !important;
+            }
+
+            /* Expander content background */
+            [data-testid="stSidebar"] .streamlit-expanderContent {
+                background-color: #34495E !important;
+                color: #ECF0F1 !important;
+                padding: 15px !important;
+                border-radius: 8px !important;
+            }
+
+            /* All text within Advanced Settings */
+            [data-testid="stSidebar"] .streamlit-expanderContent p,
+            [data-testid="stSidebar"] .streamlit-expanderContent span,
+            [data-testid="stSidebar"] .streamlit-expanderContent label {
+                color: #ECF0F1 !important;
+            }
+
+            /* Slider specific styles */
+            [data-testid="stSidebar"] .stSlider label,
+            [data-testid="stSidebar"] .stSlider label > div {
+                color: #ECF0F1 !important;
+            }
+
+            /* Slider value and range text */
+            [data-testid="stSidebar"] [data-testid="stTickBarMin"],
+            [data-testid="stSidebar"] [data-testid="stTickBarMax"],
+            [data-testid="stSidebar"] .stSlider [data-testid="stThumbValue"] {
+                color: #ECF0F1 !important;
+            }
+
+            /* Help text for sliders */
+            [data-testid="stSidebar"] .stSlider > div > div > div[data-baseweb="tooltip"] {
+                color: #ECF0F1 !important;
+            }
+
+            /* Temperature and token labels */
+            [data-testid="stSidebar"] .stSlider > div:first-child {
+                color: #ECF0F1 !important;
+            }
+
+            /* Make sure slider numbers are visible */
+            [data-testid="stSidebar"] .stSlider [role="slider"] {
+                color: #ECF0F1 !important;
+                background-color: #3498DB !important;
+            }
+            
+            /* Advanced Settings Header Specific - Title and Hover Effect */
+            [data-testid="stSidebar"] button[kind="secondary"] {
+                color: #ECF0F1 !important;
+                transition: color 0.3s ease;
+            }
+
+            [data-testid="stSidebar"] button[kind="secondary"]:hover {
+                color: #E74C3C !important;  /* Red color on hover */
+            }
+
+            /* Slider Min/Max Values and Labels */
+            [data-testid="stSidebar"] .stSlider [data-testid="stTickBarMin"],
+            [data-testid="stSidebar"] .stSlider [data-testid="stTickBarMax"],
+            [data-testid="stSidebar"] .stSlider div[role="slider"],
+            [data-testid="stSidebar"] .stSlider [data-testid="stThumbValue"] {
+                color: #ECF0F1 !important;
+                font-weight: 400;
+            }
+
+            /* Make sure the numbers in the slider are clearly visible */
+            [data-testid="stSidebar"] .stSlider div[data-baseweb="slider"] div {
+                color: #ECF0F1 !important;
+            }
+
+            /* Performance Dashboard Toggle Text */
+            [data-testid="stSidebar"] .stButton div {
+                color: #ECF0F1 !important;
+            }
+
+            /* Fix for all expandable sections in sidebar */
+            [data-testid="stSidebar"] button[kind="secondary"] {
+                color: #ECF0F1 !important;
+            }
+
+            /* Dashboard Metrics and Text */
+            .stMarkdown div p {
+                color: #2C3E50 !important;
+            }
+
+            /* Dashboard Tab Labels */
+            .stTabs button[role="tab"] {
+                color: #2C3E50 !important;
+            }
+
+            /* Metrics Values */
+            .stMetric [data-testid="stMetricValue"] {
+                color: #2C3E50 !important;
+            }
+
+            /* Metric Labels */
+            .stMetric [data-testid="stMetricLabel"] {
+                color: #2C3E50 !important;
+            }
+
+            /* JSON and Code blocks */
+            pre {
+                color: #2C3E50 !important;
+                background-color: #F8F9FA !important;
+            }
+
+            /* DataFrame Text */
+            .dataframe {
+                color: #2C3E50 !important;
+            }
+
+            /* All text in main content area */
+            .main .block-container {
+                color: #2C3E50 !important;
+            }
+            
             </style>
             """,
             unsafe_allow_html=True
         )
-        # Title and subtitle
+        # Keep these lines exactly as they are
         st.markdown('<div class="main-title">🔭 LLM Observatory</div>', unsafe_allow_html=True)
         st.markdown(
             '<div class="subtitle">Unlock Model Insights: '

@@ -61,3 +61,6 @@ touch src/__init__.py
 touch src/interface/__init__.py
 touch src/config/__init__.py
 touch src/llm/__init__.py
+
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+pytest -vv --tb=short
