@@ -29,9 +29,9 @@ class LLMConfig:
     ]
     
     ANTHROPIC_MODELS: List[str] = [
-        "claude-3-haiku-20240307",
-        "claude-3-sonnet-20240307",
-        "claude-3-opus-20240307"
+        "claude-3-5-sonnet-latest",
+        "claude-3-opus-latest",
+        "claude-3-haiku-20240307"
     ]
     
     DEFAULT_PARAMETERS: Dict[str, Any] = {
@@ -86,9 +86,9 @@ class Settings(BaseSettings):
             "gpt-3.5-turbo": {"input": 0.0005, "output": 0.0015}
         },
         "anthropic": {
-            "claude-3-haiku-20240307": {"input": 0.00025, "output": 0.00075},
-            "claude-3-sonnet-20240307": {"input": 0.003, "output": 0.015},
-            "claude-3-opus-20240307": {"input": 0.015, "output": 0.075}
+            "claude-3-5-sonnet-latest": {"input": 0.003, "output": 0.015},
+            "claude-3-opus-latest": {"input": 0.015, "output": 0.075},
+            "claude-3-haiku-20240307": {"input": 0.015, "output": 0.075}
         }
     }
     

@@ -456,7 +456,12 @@ class LLMInsightsHub:
                          environment: str) -> Dict[str, Any]:
         """Get response from selected LLM."""
         if not application_name:
-            raise ValueError("Application name is required")
+            raise ValueError(f"Model '{model}' is not available in Anthropic's model list.")
+
+        
+        if provider == "Anthropic" and model not in settings.LLM.ANTHROPIC_MODELS:
+            raise ValueError(f"Model '{model}' is not available in Anthropic's model list.")
+        
         if provider == "OpenAI":
             async with OpenAILLM(
                 api_key=settings.OPENAI_API_KEY,
