@@ -33,7 +33,10 @@ class LLMConfig:
         "claude-3-opus-latest",
         "claude-3-haiku-20240307"
     ]
-    
+    GEMINI_MODELS: List[str] = [
+        "gemini-1",
+        "gemini-2"
+    ]
     DEFAULT_PARAMETERS: Dict[str, Any] = {
         "temperature": 0.7,
         "max_tokens": 500,

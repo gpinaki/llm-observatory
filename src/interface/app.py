@@ -78,144 +78,48 @@ class LLMInsightsHub:
                 background-color: #FAFBFC;
                 color: #2C3E50;
             }
+            # Sidebar style 
             
-            /* Enhanced Sidebar Styling */
+            /* Sidebar background and text styling */
             [data-testid="stSidebar"] {
-                background-color: #2C3E50;
-                padding: 1rem;
+                background-color: #E0F7FA;  /* Light blue background */
+                color: #1E1E1E; /* Dark font color for contrast */
             }
 
-            /* Sidebar header styling */
+            /* Sidebar headers and paragraphs text color */
+            [data-testid="stSidebar"] h1, 
+            [data-testid="stSidebar"] h2, 
+            [data-testid="stSidebar"] h3, 
+            [data-testid="stSidebar"] p {
+                color: #1E1E1E;
+            }
+
+            /* Advanced Settings button styling */
             [data-testid="stSidebar"] .streamlit-expanderHeader {
-                color: #ECF0F1 !important;
-                font-weight: 600;
-                font-size: 1.1em;
-                margin-bottom: 10px;
+                background-color: #FFFFFF !important; /* Light background for visibility */
+                color: #333333 !important; /* Dark text color */
             }
 
-            /* Sidebar subheader */
-            [data-testid="stSidebar"] h3 {
-                color: #ECF0F1 !important;
-                font-weight: 600;
-                padding: 10px 0;
-                border-bottom: 1px solid #34495E;
-                margin-bottom: 15px;
-                font-size: 1.2em;
-            }
-
-            /* Control Panel text */
-            [data-testid="stSidebar"] .streamlit-expanderContent {
-                background-color: #34495E;
-                border-radius: 8px;
-                padding: 15px;
-                margin-top: 8px;
-            }
-
-            /* Dropdown and Input Labels */
-            [data-testid="stSidebar"] .stSelectbox label,
-            [data-testid="stSidebar"] .stTextInput label,
-            [data-testid="stSidebar"] .stSlider label {
-                color: #ECF0F1 !important;
-                font-weight: 500;
-                font-size: 0.95em;
-                margin-bottom: 5px;
-            }
-
-            /* Dropdown and Input Fields */
-            [data-testid="stSidebar"] .stSelectbox > div > div,
-            [data-testid="stSidebar"] .stTextInput > div > div {
-                background-color: #ECF0F1 !important;
-                color: #2C3E50 !important;
-                border-radius: 5px;
-                border: 1px solid #3498DB;
-            }
-
-            /* Fix for text input value */
-            [data-testid="stSidebar"] .stTextInput input {
-                color: #2C3E50 !important;
-                background-color: #ECF0F1 !important;
-            }
-
-            /* Fix for selectbox value */
-            [data-testid="stSidebar"] .stSelectbox > div > div[role="listbox"] {
-                color: #2C3E50 !important;
-                background-color: #ECF0F1 !important;
-            }
-
-            /* Sidebar metrics styling */
-            [data-testid="stSidebar"] .stMetric {
-                background-color: #34495E;
-                padding: 12px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                margin-bottom: 10px;
-            }
-
-            [data-testid="stSidebar"] .stMetric label {
-                color: #ECF0F1 !important;
-                font-weight: 500;
-            }
-
-            [data-testid="stSidebar"] .stMetric .metric-value {
-                color: #3498DB !important;
-                font-weight: 600;
-            }
-
-            /* Sidebar divider */
-            [data-testid="stSidebar"] hr {
-                border-color: #34495E;
-                margin: 20px 0;
-            }
-
-            /* Sidebar warning messages */
-            [data-testid="stSidebar"] .stAlert {
-                background-color: #E74C3C;
-                color: #FFFFFF;
-                padding: 10px;
-                border-radius: 5px;
-                margin: 10px 0;
-            }
-
-            /* Sidebar DataFrame */
-            [data-testid="stSidebar"] .dataframe {
-                background-color: #34495E;
-                color: #ECF0F1;
-                border-radius: 5px;
-                padding: 8px;
-                border: 1px solid #3498DB;
-            }
-
-            /* Sidebar Toggle Button */
+            /* Show/Hide Performance Analytics button */
             [data-testid="stSidebar"] .stButton > button {
-                background-color: #3498DB;
-                color: #FFFFFF;
+                background-color: #007BFF;  /* Bright blue for contrast */
+                color: #FFFFFF !important;  /* White text */
                 border: none;
-                padding: 10px 15px;
                 border-radius: 5px;
+                padding: 10px 15px;
                 font-weight: 500;
-                width: 100%;
-                margin: 10px 0;
-                transition: all 0.3s ease;
             }
 
+            /* Button hover effect */
             [data-testid="stSidebar"] .stButton > button:hover {
-                background-color: #2980B9;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                background-color: #0056b3;
+                color: #FFFFFF;
             }
-
-            /* Slider styling in sidebar */
-            [data-testid="stSidebar"] .stSlider {
-                margin: 15px 0;
-            }
-
-            [data-testid="stSidebar"] .stSlider > div > div {
-                background-color: #34495E;
-            }
-
-            [data-testid="stSidebar"] .stSlider .slider-value {
-                color: #ECF0F1 !important;
-            }
-
+            
+            # sidebar style ends 
+            
+            
+            
             /* Keep existing main content styles */
             .stMetric {
                 background-color: #FFFFFF;
@@ -391,23 +295,19 @@ class LLMInsightsHub:
     
     def initialize_session_state(self):
         """Initialize session state variables."""
-        if "messages" not in st.session_state:
-            st.session_state.messages = []
-        if "total_tokens" not in st.session_state:
-            st.session_state.total_tokens = 0
-        if "total_cost" not in st.session_state:
-            st.session_state.total_cost = 0.0
-        if "response_times" not in st.session_state:
-            st.session_state.response_times = []
-        if "application_name" not in st.session_state:
-            st.session_state.application_name = "app-llm-insights"
-        if "environment" not in st.session_state:
-            st.session_state.environment = "Development"
-        # Add these new initializations for dashboard components
-        if "llm_history" not in st.session_state:
-            st.session_state.llm_history = []
-        if "show_dashboard" not in st.session_state:
-            st.session_state.show_dashboard = False
+        defaults = {
+            "messages": [],
+            "total_tokens": 0,
+            "total_cost": 0.0,
+            "response_times": [],
+            "application_name": "app-llm-insights",
+            "environment": "Development",
+            "llm_history": [],
+            "show_dashboard": False
+        }
+        for key, value in defaults.items():
+            if key not in st.session_state:
+                st.session_state[key] = value
 
     def render_sidebar(self) -> tuple:
         """Render sidebar configuration options."""
@@ -429,6 +329,7 @@ class LLMInsightsHub:
             st.session_state.environment = environment
             if not application_name:
                 st.sidebar.warning("⚠️ Please enter an application name")
+                
             st.sidebar.divider()
             st.subheader("LLM Configuration")
             provider = st.selectbox("Select LLM Provider", options=["OpenAI", "Anthropic"])
@@ -444,6 +345,15 @@ class LLMInsightsHub:
                     'Value': [application_name, environment, provider, model]
                 })
                 st.sidebar.dataframe(config_df, hide_index=True)
+            
+
+            # Add the download summary button here
+            # Session Summary Metrics added on 11/1
+            try:
+                self.download_summary()
+            except Exception as e:
+                st.error(f"An error occurred while preparing the download summary: {str(e)}")
+                
             return provider, model, temperature, max_tokens, application_name, self.ENV_MAP[environment]
 
     async def get_llm_response(self, 
@@ -455,41 +365,47 @@ class LLMInsightsHub:
                          application_name: str,
                          environment: str) -> Dict[str, Any]:
         """Get response from selected LLM."""
-        if not application_name:
-            raise ValueError(f"Model '{model}' is not available in Anthropic's model list.")
+        try:
+            if not application_name:
+                raise ValueError("Application name cannot be empty.")
 
-        
-        if provider == "Anthropic" and model not in settings.LLM.ANTHROPIC_MODELS:
-            raise ValueError(f"Model '{model}' is not available in Anthropic's model list.")
-        
-        if provider == "OpenAI":
-            async with OpenAILLM(
-                api_key=settings.OPENAI_API_KEY,
-                model=model,
-                application_id=application_name,
-                environment=environment
-            ) as llm:
+            if provider == "Anthropic" and model not in settings.LLM.ANTHROPIC_MODELS:
+                raise ValueError(f"Model '{model}' is not available in Anthropic's model list.")
+            
+            if provider == "OpenAI":
+                async with OpenAILLM(
+                    api_key=settings.OPENAI_API_KEY,
+                    model=model,
+                    application_id=application_name,
+                    environment=environment
+                ) as llm:
+                    return await llm.generate_response(prompt=prompt, temperature=temperature, max_tokens=max_tokens)
+            else:
+                # AnthropicLLM does not support async context manager, so we instantiate it without `async with`
+                llm = AnthropicLLM(
+                    api_key=settings.ANTHROPIC_API_KEY,
+                    model=model,
+                    application_id=application_name,
+                    environment=environment
+                )
                 return await llm.generate_response(prompt=prompt, temperature=temperature, max_tokens=max_tokens)
-        else:
-            # AnthropicLLM does not support async context manager, so we instantiate it without `async with`
-            llm = AnthropicLLM(
-                api_key=settings.ANTHROPIC_API_KEY,
-                model=model,
-                application_id=application_name,
-                environment=environment
-            )
-            return await llm.generate_response(prompt=prompt, temperature=temperature, max_tokens=max_tokens)
+        except  ValueError as e:
+            st.error(f"Model Error: {str(e)}")
+        except Exception as e:
+            st.error("An unexpected error occurred. Please check your configurations.")
+            raise e
 
     def display_metrics(self, metadata: Dict[str, Any]):
         """Display basic metrics in the Streamlit app."""
         st.markdown("### Performance Overview", unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric("Total Tokens", metadata["tokens"]["total_tokens"])
+            st.metric("Total Tokens", metadata["tokens"]["total_tokens"], help="The total number of tokens used in the session.")
         with col2:
-            st.metric("Total Cost", f"${metadata['costs']['total_cost']:.4f}")
+            st.metric("Total Cost", f"${metadata['costs']['total_cost']:.4f}", help="The cumulative cost based on usage.")
         with col3:
-            st.metric("Response Time", f"{metadata['performance']['response_time']:.2f}s")
+            st.metric("Response Time", f"{metadata['performance']['response_time']:.2f}s", help="Average response time per request.")
+
 
     def display_detailed_metrics(self, metadata: Dict[str, Any]):
         """Display detailed metrics in the Streamlit app."""
@@ -532,15 +448,24 @@ class LLMInsightsHub:
     
         with overview_tab:
             DashboardComponents.render_overview_tab(df)
-    
         with cost_tab:
             DashboardComponents.render_cost_analysis_tab(df)
-    
         with perf_tab:
             DashboardComponents.render_performance_tab(df)
-    
         with history_tab:
             DashboardComponents.render_history_tab(df)
+            
+    def download_summary(self):
+        """Provide a download button for session summary as CSV."""
+        summary = {
+            "Application Name": st.session_state.application_name,
+            "Environment": st.session_state.environment,
+            "Total Tokens": st.session_state.total_tokens,
+            "Total Cost": f"${st.session_state.total_cost:.4f}",
+            "Average Response Time": (sum(st.session_state.response_times) / len(st.session_state.response_times)) if st.session_state.response_times else 0
+        }
+        summary_df = pd.DataFrame([summary])
+        st.sidebar.download_button("Download Summary", summary_df.to_csv(index=False), file_name="LLM_summary.csv", mime="text/csv")
 
     async def run_async(self):
         """Run the Streamlit application asynchronously."""
