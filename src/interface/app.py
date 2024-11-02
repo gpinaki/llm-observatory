@@ -233,10 +233,13 @@ class LLMInsightsHub:
     def render_sidebar(self) -> tuple:
         """Render sidebar configuration options."""
         with st.sidebar:
-            st.header("Control Panel")
+            st.markdown(
+                '<h2 style="font-size: 1.3em;">Configuration</h2>', 
+                unsafe_allow_html=True
+            )
             
             # Application Settings
-            st.subheader("Application Settings")
+            st.subheader("Application Configuration")
             application_name = st.text_input(
                 "Application Name",
                 value=st.session_state.application_name,
@@ -258,7 +261,12 @@ class LLMInsightsHub:
             
             # LLM Configuration
             st.subheader("LLM Configuration")
-            provider = st.selectbox("Select LLM Provider", options=["OpenAI", "Anthropic", "Gemini"])
+            provider = st.radio(
+                "LLM Provider",
+                options=["OpenAI", "Anthropic", "Gemini"],
+                index=["OpenAI", "Anthropic", "Gemini"].index(st.session_state.get("provider", "OpenAI")),
+                help="Choose the LLM provider to access different LLM models"
+            )
             model = st.selectbox(
                 "Select Model", 
                 options=(
@@ -287,16 +295,16 @@ class LLMInsightsHub:
                 )
             
             # Current Configuration Display
-            if application_name:
-                st.divider()
-                st.subheader("Current Configuration")
-                st.dataframe(
-                    pd.DataFrame({
-                        'Setting': ['Application', 'Environment', 'Provider', 'Model'],
-                        'Value': [application_name, environment, provider, model]
-                    }),
-                    hide_index=True
-                )
+            # if application_name:
+            #     st.divider()
+            #     st.subheader("Current Settings")
+            #     st.dataframe(
+            #         pd.DataFrame({
+            #             'Parameters': ['Application', 'Environment', 'Provider', 'Model'],
+            #             'Value': [application_name, environment, provider, model]
+            #         }),
+            #         hide_index=True
+            #     )
             
             try:
                 self.download_summary()
