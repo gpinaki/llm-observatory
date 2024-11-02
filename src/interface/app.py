@@ -7,6 +7,7 @@ from datetime import datetime
 from src.config.settings import settings
 from src.llm.openai_llm import OpenAILLM
 from src.llm.anthropic_llm import AnthropicLLM
+from src.llm.gemini_llm import GeminiLLM  # Add this import
 
 # Add new imports for dashboard components
 import plotly.express as px
@@ -332,8 +333,18 @@ class LLMInsightsHub:
                 
             st.sidebar.divider()
             st.subheader("LLM Configuration")
-            provider = st.selectbox("Select LLM Provider", options=["OpenAI", "Anthropic"])
-            model = st.selectbox("Select Model", options=settings.LLM.OPENAI_MODELS if provider == "OpenAI" else settings.LLM.ANTHROPIC_MODELS)
+             # Add Gemini to provider options
+            provider = st.selectbox("Select LLM Provider", options=["OpenAI", "Anthropic","Gemini"])
+            
+            # Update model selection to include Gemini models
+            model = st.selectbox(
+                "Select Model", 
+                options=(
+                    settings.LLM.OPENAI_MODELS if provider == "OpenAI"
+                    else settings.LLM.ANTHROPIC_MODELS if provider == "Anthropic"
+                    else settings.LLM.GEMINI_MODELS
+                )
+            )
             with st.expander("Advanced Settings"):
                 temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.7, step=0.1, help="Controls randomness in the response")
                 max_tokens = st.slider("Max Tokens", min_value=50, max_value=2000, value=500, step=50, help="Maximum length of the response")
@@ -372,6 +383,9 @@ class LLMInsightsHub:
             if provider == "Anthropic" and model not in settings.LLM.ANTHROPIC_MODELS:
                 raise ValueError(f"Model '{model}' is not available in Anthropic's model list.")
             
+            if provider == "Gemini" and model not in settings.LLM.GEMINI_MODELS:
+                raise ValueError(f"Model '{model}' is not available in Gemini's model list.")
+            
             if provider == "OpenAI":
                 async with OpenAILLM(
                     api_key=settings.OPENAI_API_KEY,
@@ -380,8 +394,8 @@ class LLMInsightsHub:
                     environment=environment
                 ) as llm:
                     return await llm.generate_response(prompt=prompt, temperature=temperature, max_tokens=max_tokens)
-            else:
-                # AnthropicLLM does not support async context manager, so we instantiate it without `async with`
+                    
+            elif provider == "Anthropic":
                 llm = AnthropicLLM(
                     api_key=settings.ANTHROPIC_API_KEY,
                     model=model,
@@ -389,7 +403,24 @@ class LLMInsightsHub:
                     environment=environment
                 )
                 return await llm.generate_response(prompt=prompt, temperature=temperature, max_tokens=max_tokens)
-        except  ValueError as e:
+                
+            elif provider == "Gemini":  # Add Gemini handler
+                llm = GeminiLLM(
+                    model=model,
+                    application_id=application_name,
+                    environment=environment
+                )
+                
+                return await llm.generate_response(
+                    prompt=prompt, 
+                    temperature=temperature, 
+                    max_tokens=max_tokens
+                )
+                
+            else:
+                raise ValueError(f"Unknown provider: {provider}")
+                
+        except ValueError as e:
             st.error(f"Model Error: {str(e)}")
         except Exception as e:
             st.error("An unexpected error occurred. Please check your configurations.")
@@ -466,6 +497,49 @@ class LLMInsightsHub:
         }
         summary_df = pd.DataFrame([summary])
         st.sidebar.download_button("Download Summary", summary_df.to_csv(index=False), file_name="LLM_summary.csv", mime="text/csv")
+        
+    def download_summary(self):
+        """Provide download options for session summaries in CSV and JSON formats."""
+        # Prepare summary data for CSV format
+        summary = {
+            "Application Name": st.session_state.application_name,
+            "Environment": st.session_state.environment,
+            "Total Tokens": st.session_state.total_tokens,
+            "Total Cost": f"${st.session_state.total_cost:.4f}",
+            "Average Response Time": (sum(st.session_state.response_times) / len(st.session_state.response_times)) if st.session_state.response_times else 0
+        }
+        summary_df = pd.DataFrame([summary])
+    
+        # Download button for CSV summary
+        st.sidebar.download_button(
+            "Download Summary (CSV)", 
+            summary_df.to_csv(index=False), 
+            file_name="LLM_summary.csv", 
+            mime="text/csv"
+        )
+
+        # Prepare JSON format for the entire LLM call history
+        history_json = [
+            {
+                "timestamp": entry["timestamp"].isoformat(),
+                "provider": entry["provider"],
+                "model": entry["model"],
+                "prompt": entry["prompt"],
+                "total_tokens": entry["total_tokens"],
+                "response_time": entry["response_time"],
+                "total_cost": entry["total_cost"],
+                "tokens_per_second": entry["tokens_per_second"]
+            }
+            for entry in st.session_state.llm_history
+        ]
+        
+        # Download button for JSON history
+        st.sidebar.download_button(
+            "Download History (JSON)", 
+            data=str(history_json), 
+            file_name="LLM_history.json", 
+            mime="application/json"
+        )
 
     async def run_async(self):
         """Run the Streamlit application asynchronously."""

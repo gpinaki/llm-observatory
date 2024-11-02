@@ -33,10 +33,11 @@ class LLMConfig:
         "claude-3-opus-latest",
         "claude-3-haiku-20240307"
     ]
+    
     GEMINI_MODELS: List[str] = [
-        "gemini-1",
-        "gemini-2"
+        "gemini-1.0-pro"
     ]
+    
     DEFAULT_PARAMETERS: Dict[str, Any] = {
         "temperature": 0.7,
         "max_tokens": 500,
@@ -71,6 +72,12 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
     
+    # Add Vertex AI settings
+    VERTEX_API_KEY: str = Field(
+        default="",
+        description="Vertex AI API Key"
+    )
+    
     # File paths
     BASE_DIR: Path = Path(__file__).parent.parent.parent
     LOG_DIR: Path = BASE_DIR / "logs"
@@ -80,6 +87,15 @@ class Settings(BaseSettings):
     LLM: LLMConfig = LLMConfig()
     LOGGING: LogConfig = LogConfig()
     MONITORING: MonitoringConfig = MonitoringConfig()
+    
+    GOOGLE_CLOUD_PROJECT: str = ""
+    GOOGLE_CLOUD_LOCATION: str = "us-central1"  # or your preferred location
+    
+    # Access GOOGLE_APPLICATION_CREDENTIALS in settings
+    GOOGLE_APPLICATION_CREDENTIALS: str = Field(
+        default=os.getenv("GOOGLE_APPLICATION_CREDENTIALS", ""),
+        description="Path to Google Application Default Credentials JSON file"
+    )
     
     # Cost tracking
     MODEL_COSTS: Dict[str, Dict[str, Dict[str, float]]] = {
@@ -92,6 +108,10 @@ class Settings(BaseSettings):
             "claude-3-5-sonnet-latest": {"input": 0.003, "output": 0.015},
             "claude-3-opus-latest": {"input": 0.015, "output": 0.075},
             "claude-3-haiku-20240307": {"input": 0.015, "output": 0.075}
+        },
+        "gemini": {
+            "gemini-1.0-pro": {"input": 0.00025, "output": 0.0005},  # Update with actual pricing
+            "gemini-1.0-pro-latest": {"input": 0.00025, "output": 0.0005}
         }
     }
     
@@ -102,7 +122,7 @@ class Settings(BaseSettings):
         extra="ignore"
     )
     
-    @field_validator("OPENAI_API_KEY", "ANTHROPIC_API_KEY", mode="before")
+    @field_validator("OPENAI_API_KEY", "ANTHROPIC_API_KEY", "VERTEX_API_KEY", mode="before")
     def validate_keys(cls, v: str, info: Field) -> str:
         """Validate API keys from environment."""
         if not v:
@@ -131,7 +151,8 @@ class Settings(BaseSettings):
         """Check if API keys are present."""
         return {
             "openai": bool(self.OPENAI_API_KEY),
-            "anthropic": bool(self.ANTHROPIC_API_KEY)
+            "anthropic": bool(self.ANTHROPIC_API_KEY),
+            "vertex": bool(self.VERTEX_API_KEY)  # Add this line
         }
     
     def get_model_cost(self, provider: str, model: str) -> Dict[str, float]:

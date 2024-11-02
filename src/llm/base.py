@@ -1,49 +1,24 @@
-# src/llm/base.py
-
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional
 import logging
-import time
 import uuid
 from datetime import datetime
 from src.config.settings import settings
+import os
 
 class LLMException(Exception):
     """
     Custom exception for LLM-related errors.
     Used to provide clear error messages for LLM-specific issues.
-    
-    Examples:
-        >>> raise LLMException("API key is invalid")
-        >>> raise LLMException("Model not supported")
     """
-    pass
 
 class BaseLLM(ABC):
     """
     Abstract base class for Large Language Model implementations.
-    
-    This class defines the interface that all LLM providers (like OpenAI, Anthropic)
-    must implement. It provides common functionality and tracking capabilities.
-    
-    Attributes:
-        api_key (str): Authentication key for the LLM provider
-        model (Optional[str]): Name of the specific model to use
-        session_id (str): Unique identifier for the current session
-        application_id (str): Identifier for the application using the LLM
-        environment (str): Environment where the LLM is running (e.g., 'dev', 'prod')
-        logger (logging.Logger): Logger instance for this class
-        created_at (datetime): Timestamp when the instance was created
-        
-    Usage:
-        class OpenAILLM(BaseLLM):
-            def setup(self):
-                # Implementation
-                pass
     """
     
     def __init__(self, 
-                 api_key: str, 
+                 api_key: Optional[str] = None,  # Made optional for ADC
                  model: Optional[str] = None,
                  application_id: Optional[str] = None,
                  environment: str = "development"):
@@ -51,37 +26,34 @@ class BaseLLM(ABC):
         Initialize the LLM instance with tracking capabilities.
         
         Args:
-            api_key (str): Authentication key for the LLM provider
+            api_key (Optional[str]): Authentication key for the LLM provider, if required
             model (Optional[str]): Specific model to use. If None, a default will be used
             application_id (Optional[str]): Identifier for the calling application
             environment (str): Runtime environment (development/staging/production)
             
         Raises:
-            LLMException: If api_key is empty or invalid
-            
-        Example:
-            >>> llm = OpenAILLM(
-            ...     api_key="sk-...",
-            ...     model="gpt-4",
-            ...     application_id="web-app-1",
-            ...     environment="production"
-            ... )
+            LLMException: If neither API key nor GOOGLE_APPLICATION_CREDENTIALS is provided
         """
-        # Store initialization parameters
+        # Determine authentication method
         self.api_key = api_key
+        self.use_adc = bool(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+
+        # Raise an exception if neither ADC nor API key is provided
+        if not self.use_adc and not self.api_key:
+            raise LLMException("Either GOOGLE_APPLICATION_CREDENTIALS or an API key is required for authentication.")
+
+        # Store other initialization parameters
         self.model = model
-        
-        # Generate and store tracking identifiers
         self.session_id = str(uuid.uuid4())
         self.application_id = application_id or "default-app"
         self.environment = environment
         self.created_at = datetime.now()
-        
+
         # Initialize interaction tracking
         self.total_requests = 0
         self.total_tokens = 0
         self.total_cost = 0.0
-        
+
         # Set up logging with context
         self.logger = logging.getLogger(f"{__name__}.{self.session_id}")
         self.logger.debug(
@@ -89,67 +61,34 @@ class BaseLLM(ABC):
             f"[Session: {self.session_id}, App: {self.application_id}, Env: {self.environment}]"
         )
         
-        # Validate API key
-        if not api_key:
-            self.logger.error("API key not provided")
-            raise LLMException("API key is required")
-            
         # Initialize the LLM
         try:
             self.setup()
         except Exception as e:
             self.logger.error(f"Setup failed: {str(e)}")
             raise
-        
+    
     @abstractmethod
     def setup(self) -> None:
         """
         Set up the LLM client and configuration.
-        
-        This method should:
-        1. Initialize the API client
-        2. Validate the model selection
-        3. Set up any provider-specific configurations
-        
-        Raises:
-            LLMException: If setup fails
         """
         pass
         
     @abstractmethod
     async def generate_response(self, 
-                              prompt: str,
-                              temperature: float = settings.LLM.DEFAULT_PARAMETERS["temperature"],
-                              max_tokens: int = settings.LLM.DEFAULT_PARAMETERS["max_tokens"],
-                              **kwargs) -> Dict[str, Any]:
+                            prompt: str,
+                            temperature: float = settings.LLM.DEFAULT_PARAMETERS["temperature"],
+                            max_tokens: int = settings.LLM.DEFAULT_PARAMETERS["max_tokens"],
+                            **kwargs) -> Dict[str, Any]:
         """
         Generate a response from the LLM.
-        
-        Args:
-            prompt (str): The input text to send to the LLM
-            temperature (float): Controls randomness in generation (0.0 to 1.0)
-            max_tokens (int): Maximum number of tokens to generate
-            **kwargs: Additional model-specific parameters
-            
-        Returns:
-            Dict[str, Any]: A dictionary containing:
-                - response (str): The generated text
-                - metadata (dict): Additional information including:
-                    - tokens (dict): Token usage statistics
-                    - model (str): Model used
-                    - response_time (float): Time taken to generate
-                    - finish_reason (str): Why the generation stopped
-                    - session_info (dict): Session and tracking information
         """
         pass
-        
+
     def log_interaction(self, prompt: str, response: Dict[str, Any]) -> None:
         """
         Log details of an LLM interaction with enhanced tracking.
-        
-        Args:
-            prompt (str): The input prompt
-            response (Dict[str, Any]): The complete response dictionary
         """
         try:
             # Update tracking metrics
@@ -185,12 +124,6 @@ class BaseLLM(ABC):
     def validate_response(self, response: Dict[str, Any]) -> bool:
         """
         Validate the structure of an LLM response.
-        
-        Args:
-            response (Dict[str, Any]): Response dictionary to validate
-            
-        Returns:
-            bool: True if response is valid, False otherwise
         """
         required_keys = {"response", "metadata"}
         return all(key in response for key in required_keys)
@@ -198,20 +131,9 @@ class BaseLLM(ABC):
     def get_session_info(self) -> Dict[str, Any]:
         """
         Get current session information and metrics.
-        
-        Returns:
-            Dict[str, Any]: Session information including:
-                - session_id: Unique session identifier
-                - application_id: Application identifier
-                - environment: Runtime environment
-                - created_at: Session creation timestamp
-                - metrics: Usage metrics for the session
-                
-        Example:
-            >>> session_info = llm.get_session_info()
-            >>> print(f"Total cost for session: ${session_info['metrics']['total_cost']}")
         """
-        return {
+        import json
+        session_info = {
             "session_id": self.session_id,
             "application_id": self.application_id,
             "environment": self.environment,
@@ -222,19 +144,11 @@ class BaseLLM(ABC):
                 "total_cost": self.total_cost
             }
         }
+        return json.dumps(session_info, indent=4)
         
     @abstractmethod
     def get_model_info(self) -> Dict[str, Any]:
         """
         Return information about the current model configuration.
-        
-        Returns:
-            Dict[str, Any]: A dictionary containing:
-                - provider (str): Name of the LLM provider
-                - model (str): Current model name
-                - supported_models (List[str]): Available models
-                - max_tokens (int): Maximum token limit
-                - cost_per_token (Dict): Token cost information
-                - session_info (Dict): Current session information
         """
         pass
