@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import streamlit as st
 from typing import Dict, Any
 import pandas as pd
@@ -31,269 +32,188 @@ class LLMInsightsHub:
         self.initialize_session_state()
 
     def setup_page_config(self):
-        """Configure Streamlit page."""
+        """Configure Streamlit page with mobile-first design."""
         st.set_page_config(
             page_title="LLM Observatory",
             page_icon="🔭",
             layout="wide",
-            initial_sidebar_state="expanded"
+            initial_sidebar_state="collapsed"  # Changed to collapsed for mobile
         )
         st.markdown(
             """
             <style>
-            /* Main title styling */
+            /* Base Layout and Typography - Mobile First Approach */
             .main-title {
                 font-family: 'Helvetica Neue', Arial, sans-serif;
-                font-size: 2.8em;
+                font-size: 1.8em;  /* Smaller base size for mobile */
                 font-weight: 600;
-                color: #2C3E50;
-                background: linear-gradient(to right, #E8F4F8, #F8F9FA);
-                padding: 20px;
-                border-radius: 10px;
                 text-align: center;
-                margin-bottom: 10px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                margin: 10px 5px;
+                padding: 0 10px;
             }
             
-            /* Subtitle styling */
-            .subtitle {
-                font-family: 'Helvetica Neue', Arial, sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                color: #5D6D7E;
+            .subtitle-container {
                 text-align: center;
-                margin-bottom: 30px;
-                padding: 0 20px;
-                line-height: 1.5;
-                letter-spacing: 0.3px;
+                margin: 5px 0 15px 0;
+                padding: 0 10px;
             }
             
-            /* Highlight key terms in subtitle */
-            .highlight {
-                color: #3498DB;
-                font-weight: 500;
+            .main-subtitle {
+                font-size: 1em;
+                color: #4A5568;
+                margin-bottom: 8px;
+                line-height: 1.4;
             }
             
-            /* General page styling */
-            .stApp {
-                background-color: #FAFBFC;
-                color: #2C3E50;
+            /* Mobile-Optimized Feature Pills */
+            .feature-pills {
+                display: flex;
+                justify-content: center;
+                gap: 6px;
+                flex-wrap: wrap;
+                margin: 8px 5px;
+                padding: 0 5px;
             }
-            # Sidebar style 
             
-            /* Sidebar background and text styling */
+            .feature-pill {
+                background: linear-gradient(135deg, #E2E8F0, #EDF2F7);
+                padding: 4px 8px;
+                border-radius: 15px;
+                font-size: 0.75em;
+                color: #2D3748;
+                border: 1px solid #E2E8F0;
+                white-space: nowrap;
+                margin: 2px;
+            }
+
+            /* Mobile-Optimized Metrics Cards */
+            .metric-card {
+                background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+                border-radius: 8px;
+                padding: 12px;
+                margin: 8px 0;
+                width: 100%;
+            }
+
+            /* Mobile-Optimized Sidebar */
             [data-testid="stSidebar"] {
-                background-color: #E0F7FA;  /* Light blue background */
-                color: #1E1E1E; /* Dark font color for contrast */
+                background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+                min-width: 250px !important;
+                max-width: 100% !important;
             }
 
-            /* Sidebar headers and paragraphs text color */
-            [data-testid="stSidebar"] h1, 
-            [data-testid="stSidebar"] h2, 
-            [data-testid="stSidebar"] h3, 
-            [data-testid="stSidebar"] p {
-                color: #1E1E1E;
-            }
-
-            /* Advanced Settings button styling */
-            [data-testid="stSidebar"] .streamlit-expanderHeader {
-                background-color: #FFFFFF !important; /* Light background for visibility */
-                color: #333333 !important; /* Dark text color */
-            }
-
-            /* Show/Hide Performance Analytics button */
             [data-testid="stSidebar"] .stButton > button {
-                background-color: #007BFF;  /* Bright blue for contrast */
-                color: #FFFFFF !important;  /* White text */
-                border: none;
-                border-radius: 5px;
-                padding: 10px 15px;
-                font-weight: 500;
-            }
-
-            /* Button hover effect */
-            [data-testid="stSidebar"] .stButton > button:hover {
-                background-color: #0056b3;
-                color: #FFFFFF;
-            }
-            
-            # sidebar style ends 
-            
-            
-            
-            /* Keep existing main content styles */
-            .stMetric {
-                background-color: #FFFFFF;
+                width: 100%;
                 border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                padding: 10px;
-                color: #2C3E50;
+                margin: 4px 0;
+                padding: 8px 12px;
+                font-size: 0.9em;
+                min-height: 45px;  /* Larger touch target */
             }
+
+            /* Improved Touch Targets */
+            button, select, input, .stSelectbox {
+                min-height: 45px;
+                touch-action: manipulation;
+            }
+
+            /* Better Spacing for Mobile Inputs */
+            .stTextInput input {
+                padding: 8px 12px;
+                margin: 4px 0;
+            }
+
+            /* Mobile-Optimized Tabs */
+            .stTabs [data-baseweb="tab"] {
+                padding: 10px;
+                min-height: 45px;
+                font-size: 0.9em;
+            }
+
+            /* Dark Mode Adjustments */
+            @media (prefers-color-scheme: dark) {
+                .main-subtitle { color: #E2E8F0; }
+                .feature-pill {
+                    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+                    border-color: rgba(255,255,255,0.1);
+                    color: #E2E8F0;
+                }
+                [data-testid="stSidebar"] {
+                    background: linear-gradient(180deg, rgba(49,51,63,0.2) 0%, rgba(49,51,63,0.4) 100%);
+                }
+            }
+
+            /* Responsive Design - Tablet and Desktop Enhancements */
+            @media screen and (min-width: 768px) {
+                .main-title {
+                    font-size: 2.5em;
+                    margin: 20px 0;
+                }
+                
+                .main-subtitle {
+                    font-size: 1.2em;
+                }
+                
+                .feature-pill {
+                    padding: 5px 12px;
+                    font-size: 0.9em;
+                }
+                
+                .feature-pills {
+                    gap: 12px;
+                    margin: 15px 0;
+                }
+                
+                .metric-card {
+                    padding: 16px;
+                    border-radius: 12px;
+                }
+
+                [data-testid="stSidebar"] .stButton > button {
+                    padding: 10px 15px;
+                }
+            }
+
+            /* Hide Streamlit Branding for Cleaner Mobile View */
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
             
-            .stChatMessage {
-                background-color: #FFFFFF;
-                border-radius: 8px;
-                padding: 10px;
-                margin: 5px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-                color: #2C3E50;
-            }
-            /* Chat Interface Text Styling */
-            .stChatMessage p {
-                color: #2C3E50 !important;
-                font-size: 1rem;
+            /* Improved Scrolling */
+            [data-testid="stVerticalBlock"] {
+                gap: 0.5rem;
             }
 
-            /* Chat Message Background */
-            .stChatMessage {
-                background-color: #FFFFFF !important;
-                border-radius: 8px;
-                padding: 10px;
-                margin: 5px 0;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            }
-
-            /* Dashboard and Metrics Text */
-            .element-container div {
-                color: #2C3E50 !important;
-            }
-
-           /* Complete Advanced Settings Panel Fix */
-            /* Main expander header */
-            [data-testid="stSidebar"] .streamlit-expanderHeader {
-                color: #ECF0F1 !important;
-                background-color: #2C3E50 !important;
-            }
-
-            /* Expander content background */
-            [data-testid="stSidebar"] .streamlit-expanderContent {
-                background-color: #34495E !important;
-                color: #ECF0F1 !important;
-                padding: 15px !important;
-                border-radius: 8px !important;
-            }
-
-            /* All text within Advanced Settings */
-            [data-testid="stSidebar"] .streamlit-expanderContent p,
-            [data-testid="stSidebar"] .streamlit-expanderContent span,
-            [data-testid="stSidebar"] .streamlit-expanderContent label {
-                color: #ECF0F1 !important;
-            }
-
-            /* Slider specific styles */
-            [data-testid="stSidebar"] .stSlider label,
-            [data-testid="stSidebar"] .stSlider label > div {
-                color: #ECF0F1 !important;
-            }
-
-            /* Slider value and range text */
-            [data-testid="stSidebar"] [data-testid="stTickBarMin"],
-            [data-testid="stSidebar"] [data-testid="stTickBarMax"],
-            [data-testid="stSidebar"] .stSlider [data-testid="stThumbValue"] {
-                color: #ECF0F1 !important;
-            }
-
-            /* Help text for sliders */
-            [data-testid="stSidebar"] .stSlider > div > div > div[data-baseweb="tooltip"] {
-                color: #ECF0F1 !important;
-            }
-
-            /* Temperature and token labels */
-            [data-testid="stSidebar"] .stSlider > div:first-child {
-                color: #ECF0F1 !important;
-            }
-
-            /* Make sure slider numbers are visible */
-            [data-testid="stSidebar"] .stSlider [role="slider"] {
-                color: #ECF0F1 !important;
-                background-color: #3498DB !important;
-            }
-            
-            /* Advanced Settings Header Specific - Title and Hover Effect */
-            [data-testid="stSidebar"] button[kind="secondary"] {
-                color: #ECF0F1 !important;
-                transition: color 0.3s ease;
-            }
-
-            [data-testid="stSidebar"] button[kind="secondary"]:hover {
-                color: #E74C3C !important;  /* Red color on hover */
-            }
-
-            /* Slider Min/Max Values and Labels */
-            [data-testid="stSidebar"] .stSlider [data-testid="stTickBarMin"],
-            [data-testid="stSidebar"] .stSlider [data-testid="stTickBarMax"],
-            [data-testid="stSidebar"] .stSlider div[role="slider"],
-            [data-testid="stSidebar"] .stSlider [data-testid="stThumbValue"] {
-                color: #ECF0F1 !important;
-                font-weight: 400;
-            }
-
-            /* Make sure the numbers in the slider are clearly visible */
-            [data-testid="stSidebar"] .stSlider div[data-baseweb="slider"] div {
-                color: #ECF0F1 !important;
-            }
-
-            /* Performance Dashboard Toggle Text */
-            [data-testid="stSidebar"] .stButton div {
-                color: #ECF0F1 !important;
-            }
-
-            /* Fix for all expandable sections in sidebar */
-            [data-testid="stSidebar"] button[kind="secondary"] {
-                color: #ECF0F1 !important;
-            }
-
-            /* Dashboard Metrics and Text */
-            .stMarkdown div p {
-                color: #2C3E50 !important;
-            }
-
-            /* Dashboard Tab Labels */
-            .stTabs button[role="tab"] {
-                color: #2C3E50 !important;
-            }
-
-            /* Metrics Values */
-            .stMetric [data-testid="stMetricValue"] {
-                color: #2C3E50 !important;
-            }
-
-            /* Metric Labels */
-            .stMetric [data-testid="stMetricLabel"] {
-                color: #2C3E50 !important;
-            }
-
-            /* JSON and Code blocks */
-            pre {
-                color: #2C3E50 !important;
-                background-color: #F8F9FA !important;
-            }
-
-            /* DataFrame Text */
-            .dataframe {
-                color: #2C3E50 !important;
-            }
-
-            /* All text in main content area */
+            /* Better Touch Scrolling */
             .main .block-container {
-                color: #2C3E50 !important;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
-            
             </style>
             """,
             unsafe_allow_html=True
         )
-        # Keep these lines exactly as they are
+
+        # Mobile-Optimized Title and Feature Pills
         st.markdown('<div class="main-title">🔭 LLM Observatory</div>', unsafe_allow_html=True)
         st.markdown(
-            '<div class="subtitle">Unlock Model Insights: '
-            '<span class="highlight">Track Performance</span>, '
-            '<span class="highlight">Control Costs</span>, '
-            '<span class="highlight">Drive Results</span></div>', 
+            """
+            <div class="subtitle-container">
+                <div class="main-subtitle">
+                    LLM Monitoring & Analysis Platform
+                </div>
+                <div class="feature-pills">
+                    <span class="feature-pill">🤖 Multi-Model</span>
+                    <span class="feature-pill">📊 Analytics</span>
+                    <span class="feature-pill">💰 Cost</span>
+                    <span class="feature-pill">⚡ Performance</span>
+                    <span class="feature-pill">📈 Metrics</span>
+                </div>
+            </div>
+            """,
             unsafe_allow_html=True
         )
-        st.sidebar.header("Control Panel")
-    
     def initialize_session_state(self):
         """Initialize session state variables."""
         defaults = {
@@ -313,6 +233,9 @@ class LLMInsightsHub:
     def render_sidebar(self) -> tuple:
         """Render sidebar configuration options."""
         with st.sidebar:
+            st.header("Control Panel")
+            
+            # Application Settings
             st.subheader("Application Settings")
             application_name = st.text_input(
                 "Application Name",
@@ -320,23 +243,22 @@ class LLMInsightsHub:
                 placeholder="Enter your application name",
                 help="Unique identifier for your application"
             )
+            
             environment = st.selectbox(
                 "Environment",
                 options=self.ENVIRONMENTS,
                 index=self.ENVIRONMENTS.index(st.session_state.environment),
                 help="Select the deployment environment"
             )
-            st.session_state.application_name = application_name
-            st.session_state.environment = environment
-            if not application_name:
-                st.sidebar.warning("⚠️ Please enter an application name")
-                
-            st.sidebar.divider()
-            st.subheader("LLM Configuration")
-             # Add Gemini to provider options
-            provider = st.selectbox("Select LLM Provider", options=["OpenAI", "Anthropic","Gemini"])
             
-            # Update model selection to include Gemini models
+            if not application_name:
+                st.warning("⚠️ Please enter an application name")
+            
+            st.divider()
+            
+            # LLM Configuration
+            st.subheader("LLM Configuration")
+            provider = st.selectbox("Select LLM Provider", options=["OpenAI", "Anthropic", "Gemini"])
             model = st.selectbox(
                 "Select Model", 
                 options=(
@@ -345,27 +267,43 @@ class LLMInsightsHub:
                     else settings.LLM.GEMINI_MODELS
                 )
             )
-            with st.expander("Advanced Settings"):
-                temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.7, step=0.1, help="Controls randomness in the response")
-                max_tokens = st.slider("Max Tokens", min_value=50, max_value=2000, value=500, step=50, help="Maximum length of the response")
-            if application_name:
-                st.sidebar.divider()
-                st.sidebar.subheader("Current Configuration")
-                config_df = pd.DataFrame({
-                    'Setting': ['Application', 'Environment', 'Provider', 'Model'],
-                    'Value': [application_name, environment, provider, model]
-                })
-                st.sidebar.dataframe(config_df, hide_index=True)
             
-
-            # Add the download summary button here
-            # Session Summary Metrics added on 11/1
+            with st.expander("Advanced Settings"):
+                temperature = st.slider(
+                    "Temperature",
+                    min_value=0.0,
+                    max_value=1.0,
+                    value=0.7,
+                    step=0.1,
+                    help="Controls randomness in the response"
+                )
+                max_tokens = st.slider(
+                    "Max Tokens",
+                    min_value=50,
+                    max_value=2000,
+                    value=500,
+                    step=50,
+                    help="Maximum length of the response"
+                )
+            
+            # Current Configuration Display
+            if application_name:
+                st.divider()
+                st.subheader("Current Configuration")
+                st.dataframe(
+                    pd.DataFrame({
+                        'Setting': ['Application', 'Environment', 'Provider', 'Model'],
+                        'Value': [application_name, environment, provider, model]
+                    }),
+                    hide_index=True
+                )
+            
             try:
                 self.download_summary()
             except Exception as e:
-                st.error(f"An error occurred while preparing the download summary: {str(e)}")
-                
-            return provider, model, temperature, max_tokens, application_name, self.ENV_MAP[environment]
+                st.error(f"Error preparing download summary of the session data.: {str(e)}")
+        
+        return provider, model, temperature, max_tokens, application_name, self.ENV_MAP[environment]
 
     async def get_llm_response(self, 
                          provider: str,
@@ -376,6 +314,8 @@ class LLMInsightsHub:
                          application_name: str,
                          environment: str) -> Dict[str, Any]:
         """Get response from selected LLM."""
+        if provider not in ["OpenAI", "Anthropic", "Gemini"]:
+            raise ValueError(f"Unknown provider: {provider}")
         try:
             if not application_name:
                 raise ValueError("Application name cannot be empty.")
@@ -444,7 +384,7 @@ class LLMInsightsHub:
             st.json(metadata)
     
     def store_llm_call(self, prompt: str, response: Dict[str, Any]):
-        """Store LLM call in history."""
+        """Store LLM call in history with complete JSON data."""
         history_entry = {
             "timestamp": datetime.now(),
             "provider": response["metadata"]["model"].split("-")[0],
@@ -453,9 +393,19 @@ class LLMInsightsHub:
             "total_tokens": response["metadata"]["tokens"]["total_tokens"],
             "response_time": response["metadata"]["performance"]["response_time"],
             "total_cost": response["metadata"]["costs"]["total_cost"],
-            "tokens_per_second": response["metadata"]["performance"]["tokens_per_second"]
+            "tokens_per_second": response["metadata"]["performance"]["tokens_per_second"],
+            # Add full request/response JSON
+            "full_prompt": prompt,
+            "full_response": response["response"],
+            "request_json": str({
+                "provider": response["metadata"]["model"].split("-")[0],
+                "model": response["metadata"]["model"],
+                "prompt": prompt,
+                "timestamp": datetime.now().isoformat()
+            }),
+            "response_json": str(response)
         }
-        
+
         st.session_state.llm_history.append(history_entry)
         if len(st.session_state.llm_history) > 10:
             st.session_state.llm_history.pop(0)
@@ -487,59 +437,69 @@ class LLMInsightsHub:
             DashboardComponents.render_history_tab(df)
             
     def download_summary(self):
-        """Provide a download button for session summary as CSV."""
-        summary = {
-            "Application Name": st.session_state.application_name,
-            "Environment": st.session_state.environment,
-            "Total Tokens": st.session_state.total_tokens,
-            "Total Cost": f"${st.session_state.total_cost:.4f}",
-            "Average Response Time": (sum(st.session_state.response_times) / len(st.session_state.response_times)) if st.session_state.response_times else 0
-        }
-        summary_df = pd.DataFrame([summary])
-        st.sidebar.download_button("Download Summary", summary_df.to_csv(index=False), file_name="LLM_summary.csv", mime="text/csv")
-        
-    def download_summary(self):
-        """Provide download options for session summaries in CSV and JSON formats."""
-        # Prepare summary data for CSV format
-        summary = {
-            "Application Name": st.session_state.application_name,
-            "Environment": st.session_state.environment,
-            "Total Tokens": st.session_state.total_tokens,
-            "Total Cost": f"${st.session_state.total_cost:.4f}",
-            "Average Response Time": (sum(st.session_state.response_times) / len(st.session_state.response_times)) if st.session_state.response_times else 0
-        }
-        summary_df = pd.DataFrame([summary])
-    
-        # Download button for CSV summary
-        st.sidebar.download_button(
-            "Download Summary (CSV)", 
-            summary_df.to_csv(index=False), 
-            file_name="LLM_summary.csv", 
-            mime="text/csv"
-        )
-
-        # Prepare JSON format for the entire LLM call history
-        history_json = [
-            {
-                "timestamp": entry["timestamp"].isoformat(),
-                "provider": entry["provider"],
-                "model": entry["model"],
-                "prompt": entry["prompt"],
-                "total_tokens": entry["total_tokens"],
-                "response_time": entry["response_time"],
-                "total_cost": entry["total_cost"],
-                "tokens_per_second": entry["tokens_per_second"]
-            }
-            for entry in st.session_state.llm_history
-        ]
-        
-        # Download button for JSON history
-        st.sidebar.download_button(
-            "Download History (JSON)", 
-            data=str(history_json), 
-            file_name="LLM_history.json", 
-            mime="application/json"
-        )
+        """Provide consolidated download of session history and summary with JSON data."""
+        try:
+            # Create history DataFrame
+            if st.session_state.llm_history:
+                # Convert history to DataFrame
+                history_df = pd.DataFrame(st.session_state.llm_history)
+                
+                # Format timestamp
+                history_df['timestamp'] = pd.to_datetime(history_df['timestamp']).dt.strftime('%Y-%m-%d %H:%M:%S')
+                
+                # Create summary row as a separate DataFrame
+                # Note: Summary row won't have JSON data as it's a summary
+                summary_df = pd.DataFrame([{
+                    'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'provider': 'SUMMARY',
+                    'model': 'All Models',
+                    'prompt': 'Session Summary',
+                    'total_tokens': st.session_state.total_tokens,
+                    'response_time': sum(st.session_state.response_times) / len(st.session_state.response_times) if st.session_state.response_times else 0,
+                    'total_cost': st.session_state.total_cost,
+                    'tokens_per_second': history_df['tokens_per_second'].mean(),
+                    'full_prompt': '',  # Empty for summary row
+                    'full_response': '',  # Empty for summary row
+                    'request_json': '',  # Empty for summary row
+                    'response_json': ''  # Empty for summary row
+                }])
+                
+                # Concatenate history and summary
+                final_df = pd.concat([history_df, summary_df], ignore_index=True)
+                
+                # Reorder columns to put JSON data at the end
+                column_order = [
+                    'timestamp',
+                    'provider',
+                    'model',
+                    'prompt',
+                    'total_tokens',
+                    'response_time',
+                    'total_cost',
+                    'tokens_per_second',
+                    'full_prompt',
+                    'full_response',
+                    'request_json',
+                    'response_json'
+                ]
+                
+                final_df = final_df[column_order]
+                
+                # Create download button with a more descriptive name
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                filename = f"llm_session_data_{timestamp}.csv"
+                
+                st.sidebar.download_button(
+                    "📥 Download Complete Session Data",
+                    final_df.to_csv(index=False),
+                    file_name=filename,
+                    mime="text/csv",
+                    help="Download complete session history including request/response data and summary"
+                )
+            
+        except Exception as e:
+            st.error(f"Error preparing download summary of the session data: {str(e)}")
+            logging.error(f"Download summary error: {str(e)}", exc_info=True)
 
     async def run_async(self):
         """Run the Streamlit application asynchronously."""
