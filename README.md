@@ -54,7 +54,7 @@ streamlit run src/interface/app.py
 Use the Coniguration section in the sidebar to do the following.
 - **Application and Environment Tracking**: Enter application name and choose environment for auditing.
 
-    ![select-app](assets/screenshots/select_config.png)
+   <img src="assets/screenshots/select_config.png" width="550" height="450">
 
 - **Provider and Model Selection**: Choose provider, then select specific model for that provider.
 
