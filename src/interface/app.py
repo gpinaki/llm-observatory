@@ -1,3 +1,9 @@
+# At the top of each main .py file
+"""
+Copyright (c) 2024 Pinaki Guha
+Licensed under the MIT License - see LICENSE file for details.
+"""
+
 import asyncio
 import logging
 import streamlit as st
