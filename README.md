@@ -3,29 +3,25 @@
 
 A comprehensive AI Observability Platform designed for enterprise-scale LLM operations. Enable data-driven decisions through real-time cost analysis, performance monitoring, and cross-provider model response analytics (OpenAI, Anthropic, and Google's Gemini).
 
-### Value Proposition for Data Leaders
-- **Cost Optimization**: Real-time cost tracking and comparision across LLM providers
-- **Performance Analytics**: Comprehensive metrics for informed decision-making
-- **Enterprise Integration**: Easily extendable API for multi-environment and multi-application support
-- **Scalable Architecture**: Built for enterprise-grade deployments
+![clean-chat](assets/screenshots/clean_chat_interface.png)
 
 ## Features
 
 ### Multi-Provider Model Integration
-![Feature-1](assets/screenshots/clean_chat_interface.png)
+![Feature-1](assets/screenshots/chat_interface.png)
 - Unified Interface: Single interface for OpenAI, Anthropic, and Gemini models (more to come!).
 - Advanced Control Panel: Tailored monitoring for each provider's unique characteristics.
 - Cross-Provider Analytics: Compare performance and costs across providers
-### Comprehensive usage analytics and metrics
+### Enperprise-Grade Analytics
 ![Feature-2](assets/screenshots/dashboard-cost.png)
 - Real-Time Cost Tracking: Monitor costs as they occur across all providers.
 - Token-Level Analysis: Detailed breakdown of input/output token usage and costs
 - Metric Comparison Tools: Get real-time metrics with option to download for offline research
 ### Production grade architecture 
-![Feature-3](assets/screenshots/clean_chat_interface.png)
 - Enterprise-grade observability: Offers extendable UI and API to instrument metrics across sessions, applications, and environemnts.
 - Modular architecture: Esaily scalable for production deployment. 
 - Download feature: Download session history in csv formart for offline research.
+
 
 ## ⚡️ Quick Start 
 
@@ -56,45 +52,92 @@ streamlit run src/interface/app.py
 ## 💡 Usage Guide
 ### 1. Control Panel Configuration 
 Use the Coniguration section in the sidebar to do the following.
-- **Environment Selection**: Choose between Dev/Test/Int/Prod.
-- **Application Tracking**: Enter application name for audit trail.
-    ![select-app](assets/screenshots/select_app_env.png)
-- Provider Selection: Choose between OpenAI, Anthropic, or Gemini
+- **Application and Environment Tracking**: Enter application name and choose environment for auditing.
+
+    ![select-app](assets/screenshots/select_config.png)
+
+- **Provider Selection**: Choose between OpenAI, Anthropic, or Gemini.
+
    ![select-LLM](assets/screenshots/select_LLM.png)
-- Model Configuration: Select specific models and parameters
-  ![Main Interface](assets/screenshots/select_model.png)
-- Advanced Configuration: Adjust token limits and temprature 
-  ![Select-Model](assets/screenshots/advanced_config.png)
-- Toggle to view performance analytics
-  ![toggle-for-analytics](assets/screenshots/toggle_performance.png)
+
+- **Model Configuration**: Select specific models within the LLM.
+
+    ![Main Interface](assets/screenshots/select_model.png)
+
+- **Advanced Configuration**: Adjust token limits and temprature. 
+
+    ![Select-Model](assets/screenshots/advanced_config.png)
+
+- **Easily switch to dashboard**: Toggle to view performance analytics
+
+    ![toggle-for-analytics](assets/screenshots/toggle_performance.png)
 
 ### 2. Interactive unified chat interface
-Real-time interaction with selected LLM provider.
+- Real-time interaction with selected LLM provider.
+
     ![clean-chat](assets/screenshots/clean_chat_interface.png)
+
 - Performance insight of a single request: View token usage and costs as you chat
+
     ![single-request](assets/screenshots/query_level_stat.png)
-- Session-level summary: Track session level usage
-    ![session-summary](assets/screenshots/session_summary.png)
+
 - Double-click detailed response: Click to get detailed response 
+
     ![detailed-response](assets/screenshots/detailed_response.png)
 
 ### 3. Analytics Dashboard 
 Comprehensive analytics for decision-making.
-Click Toggle Performance Dashboard Button to review session-level metrics.
-- Overview Tab: Show a quick compaision of all models used.
+
+- **Overview Tab**: Show a quick compaision of all models used.
+
     ![dashboard-1](assets/screenshots/dashboard-overview.png)
-- Cost Analysis Tab: Monitor and compare provider costs
+
+- **Cost Analysis Tab**: Monitor and compare provider costs
+
     ![dashboard-2](assets/screenshots/dashboard-cost.png)
-- Performance Tab: Track and analyze response metrics
+
+- **Performance Tab**: Track and analyze response metrics
+
     ![dashboard-3](assets/screenshots/dashboard-response-metrics.png)
-- History Tab: Review detailed interaction history
+
+- **History Tab**: Review detailed interaction history
+
     ![dashboard-4](assets/screenshots/dashboard-call_history.png)
 
 ### 4. Download Capability 
-Click on "Download Complete Session Data" button to export all session metrics and interactions.
-    ![download-button][download-button]
-- Analyze session level requests, responses and the observability metrics in the CSV format.
+- Click on "Download Complete Session Data" button to export all session metrics and interactions.
+
     ![download-csv][download-csv]
+
+## Technical Architecture
+
+### Modular Design
+```mermaid
+    A[Web Interface] --> B[LLM Controller]
+    B --> C[Provider Implementations]
+    C --> D[OpenAI]
+    C --> E[Anthropic]
+    C --> F[Gemini]
+    B --> G[Metrics Engine]
+    G --> H[Cost Analytics]
+    G --> I[Performance Metrics]
+    G --> J[Usage Analytics]
+```
+
+### Project Structure
+```
+llm-observatory/
+├── src/
+│   ├── llm/                    # LLM Provider Implementations
+│   │   ├── base.py            # Abstract Base Class
+│   │   ├── openai_llm.py      
+│   │   ├── anthropic_llm.py   
+│   │   └── gemini_llm.py      
+│   ├── interface/             # UI Components
+│   └── config/                # Configuration Management
+├── tests/                     # Test Suite
+└── assets/                    # Static Resources
+```
 
 ## 📝 License
 
@@ -120,10 +163,10 @@ Project Link: [My Github LLM-Repository][git-repo-url]
 - ✅ Download Session  Summary
 
 ### Future Enhancements
-- 🔄 Database integration for extended history
+- 🔄 Database integration
 - 🔄 Custom alert configurations 
-- 🔄 Cost prediction modeling
-- 🔄 Guardrails for security 
+- 🔄 API Gateway integration
+- 🔄 Additional model and vendor support 
 
 ## 📊 Benefits
 
