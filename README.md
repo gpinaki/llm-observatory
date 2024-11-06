@@ -56,11 +56,7 @@ Use the Coniguration section in the sidebar to do the following.
 
     ![select-app](assets/screenshots/select_config.png)
 
-- **Provider Selection**: Choose between OpenAI, Anthropic, or Gemini.
-
-   ![select-LLM](assets/screenshots/select_LLM.png)
-
-- **Model Configuration**: Select specific models within the LLM.
+- **Provider and Model Selection**: Choose provider, then select specific model for that provider.
 
     ![Main Interface](assets/screenshots/select_model.png)
 
@@ -109,20 +105,6 @@ Comprehensive analytics for decision-making.
 
     ![download-csv][download-csv]
 
-## Technical Architecture
-
-### Modular Design
-```mermaid
-    A[Web Interface] --> B[LLM Controller]
-    B --> C[Provider Implementations]
-    C --> D[OpenAI]
-    C --> E[Anthropic]
-    C --> F[Gemini]
-    B --> G[Metrics Engine]
-    G --> H[Cost Analytics]
-    G --> I[Performance Metrics]
-    G --> J[Usage Analytics]
-```
 
 ### Project Structure
 ```
