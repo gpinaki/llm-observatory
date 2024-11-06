@@ -121,19 +121,6 @@ llm-observatory/
 └── assets/                    # Static Resources
 ```
 
-## 📝 License
-
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-
-Feel free to fork the repository and submit a pull request to contribute to the project.
-
-## 📧 Contact
-
-Pinaki Guha  - [pinaki.guha@gmail.com](mailto:pinaki.guha@gmail.com)
-Project Link: [My Github LLM-Repository][git-repo-url]
-
 ## 🚀 Implementation Roadmap
 
 ### Current Implementation
