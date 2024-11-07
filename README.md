@@ -12,13 +12,13 @@ A comprehensive AI Observability Platform designed for enterprise-scale LLM oper
 - Unified Interface: Single interface for OpenAI, Anthropic, and Gemini models (more to come!).
 - Advanced Control Panel: Tailored monitoring for each provider's unique characteristics.
 - Cross-Provider Analytics: Compare performance and costs across providers
-### Enperprise-Grade Analytics
+### Enterprise-Grade Analytics
 ![Feature-2](assets/screenshots/dashboard-cost.png)
 - Real-Time Cost Tracking: Monitor costs as they occur across all providers.
 - Token-Level Analysis: Detailed breakdown of input/output token usage and costs
 - Metric Comparison Tools: Get real-time metrics with option to download for offline research
-### Production grade architecture 
-- Enterprise-grade observability: Offers extendable UI and API to instrument metrics across sessions, applications, and environemnts.
+### Scalable & Modular Architecture 
+- Enterprise-grade scalability: Offers extendable UI and API to instrument metrics across sessions, applications, and environemnts.
 - Modular architecture: Esaily scalable for production deployment. 
 - Download feature: Download session history in csv formart for offline research.
 
