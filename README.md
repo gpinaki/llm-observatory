@@ -208,7 +208,7 @@ Performance Tiers:
     ├── Cost: $
     ├── Best for: Simple tasks, high volume
     └── Example models: GPT-3.5-Turbo
-  
+```
 
 ## 📊 Benefits
 
