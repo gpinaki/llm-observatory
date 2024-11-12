@@ -135,7 +135,80 @@ llm-observatory/
 - 🔄 Database integration
 - 🔄 Custom alert configurations 
 - 🔄 API Gateway integration
-- 🔄 Additional model and vendor support 
+- 🔄 Additional model and vendor support
+
+Analytics & Insights
+
+LLM Observatory provides comprehensive analytics to drive informed decision-making for LLM selection and optimization.
+
+What We Track
+
+### Cost Analytics
+
+- **Cost per Token**: Granular cost analysis for input/output tokens
+- **Total Cost per Model**: Cumulative cost across different models
+- **Cost Trends**: Historical cost patterns and projections
+- **Provider Comparison**: Side-by-side cost analysis across providers
+
+#### Response Time Analysis
+
+- **Average Response Time**: Model responsiveness measurement
+- **Response Distribution**: Consistency and reliability indicators
+- **Processing Speed**: Tokens processed per second
+
+### Usage Analytics
+
+- **Token Utilization**: Input/output token consumption
+- **Model Usage Trends**: Preferred models and patterns
+- **Environment Metrics**: Performance across Dev/Test/Prod
+- **Historical Data**: Session-based analytics
+
+## Strategic Value
+
+- Understand usage patterns across teams
+- Plan capacity and resources
+- Optimize model selection
+- Track environment-specific performance
+
+ ## 🎯 LLM Decision Metrics Guide
+
+Our platform provides comprehensive metrics to help you choose and optimize LLM usage for your specific needs.
+
+### Cost-Performance Matrix
+
+| Metric Category | What We Measure | Why It Matters | How to Track |
+|----------------|-----------------|----------------|--------------|
+| **Cost Efficiency** |
+| Token Costs | • Input token cost<br>• Output token cost<br>• Average cost per request | Helps optimize budget and resource allocation | Check Cost Analysis tab in dashboard |
+| Volume Metrics | • Daily token usage<br>• Requests per day<br>• Cost accumulation | Helps in capacity planning | Monitor Overview tab trends |
+
+### Response Time Performance
+
+| Speed Category | Target Range | Best For | Trade-offs |
+|---------------|--------------|-----------|------------|
+| Ultra Fast (<1s) | 0.5-1.0s | Real-time applications | Higher cost, shorter responses |
+| Standard (1-2s) | 1.0-2.0s | Most applications | Balanced cost/performance |
+| Batch Mode (2s+) | 2.0s+ | Background processing | Lower cost, longer responses |
+
+### Quality vs Cost Trade-off
+
+```plaintext
+Performance Tiers:
+├── Premium Tier
+│   ├── Cost: $$$
+│   ├── Best for: Complex reasoning, accuracy-critical
+│   └── Example models: GPT-4, Claude-3-Opus
+│
+├── Standard Tier
+│   ├── Cost: $$
+│   ├── Best for: General applications, balanced needs
+│   └── Example models: Claude-3-Haiku
+│
+└── Economy Tier
+    ├── Cost: $
+    ├── Best for: Simple tasks, high volume
+    └── Example models: GPT-3.5-Turbo
+  
 
 ## 📊 Benefits
 
