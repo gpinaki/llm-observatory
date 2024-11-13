@@ -137,7 +137,7 @@ llm-observatory/
 - 🔄 API Gateway integration
 - 🔄 Additional model and vendor support
 
-Analytics & Insights
+## 📊 Analytics & Insights
 
 LLM Observatory provides comprehensive analytics to drive informed decision-making for LLM selection and optimization.
 
