@@ -45,6 +45,9 @@ cp .env.example .env
 # ANTHROPIC_API_KEY=your-key
 # VERTEX_API_KEY=your-key
 
+# Set current working directory as Python path
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+
 # Launch application
 streamlit run src/interface/app.py
 ```
