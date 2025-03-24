@@ -5,9 +5,6 @@ A comprehensive AI Observability Platform designed for enterprise-scale LLM oper
 
 ![clean-chat](assets/screenshots/clean_chat_interface.png)
 
-## Disclaimer
-
-This repository and its contents are entirely personal and do not represent the views of any company or organization. No proprietary code, confidential data, or client-specific implementation details are included. All work has been developed independently for open-source experimentation and public sharing.
 
 ## Features
 
@@ -224,6 +221,10 @@ Performance Tiers:
 - **Metrics Dashboard**: Real-time performance metrics dashboard.
 - **Download Capability**: Support CSV download for offline analysis.
 - **Scalable Architecture**: Built for enterprise requirements, can be used in multi-environments and multi-application scenario.
+
+## Disclaimer
+
+This repository and its contents are entirely personal and do not represent the views of any company or organization. No proprietary code, confidential data, or client-specific implementation details are included. All work has been developed independently for open-source experimentation and public sharing.
 
 ## 📝 License
 
